@@ -1,5 +1,5 @@
 import type { Game } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy } from 'lucide-react';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -26,6 +26,18 @@ export const games: Game[] = [
     href: '/truth-or-dare',
     icon: Flame,
   },
+  {
+    title: 'Rock Paper Scissors',
+    description: 'The timeless game of choices. Can you outsmart the computer?',
+    href: '/rock-paper-scissors',
+    icon: Hand,
+  },
+  {
+    title: 'Hangman',
+    description: 'Guess the word one letter at a time before the time runs out.',
+    href: '/hangman',
+    icon: ALargeSmall,
+  }
 ];
 
 export const navLinks = [
@@ -54,4 +66,12 @@ export const dares: string[] = [
   'Post an embarrassing photo of yourself online.',
   'Imitate a celebrity until someone guesses who it is.',
   'Let the group choose a word you have to use in every sentence for 10 minutes.',
+];
+
+export const hangmanWords: string[] = [
+    'react', 'nextjs', 'tailwind', 'typescript', 'javascript', 'firebase', 'genkit', 
+    'component', 'developer', 'interface', 'program', 'software', 'hardware', 
+    'function', 'variable', 'constant', 'array', 'object', 'class', 'module',
+    'database', 'query', 'schema', 'server', 'client', 'network', 'protocol',
+    'authentication', 'authorization', 'encryption', 'security', 'vulnerability',
 ];
