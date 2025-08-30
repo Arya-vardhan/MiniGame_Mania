@@ -22,3 +22,9 @@ export interface EmojiPuzzle {
     emojis: string;
     solution: string;
 }
+
+export interface TriviaQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: string;
+}

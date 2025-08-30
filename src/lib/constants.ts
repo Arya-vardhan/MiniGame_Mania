@@ -1,5 +1,5 @@
-import type { Game, SentencePuzzle, EmojiPuzzle } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile } from 'lucide-react';
+import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion } from '@/lib/types';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -49,6 +49,12 @@ export const games: Game[] = [
     description: 'Guess the word or phrase from the emojis.',
     href: '/emoji-pictionary',
     icon: Smile,
+  },
+  {
+    title: 'Quiz Trivia',
+    description: 'Test your knowledge with a fun trivia quiz.',
+    href: '/quiz-trivia',
+    icon: BrainCircuit,
   }
 ];
 
@@ -137,4 +143,57 @@ export const emojiPuzzles: EmojiPuzzle[] = [
   { emojis: '🗼❤️', solution: 'Paris' },
   { emojis: '⏰➡️💰', solution: 'Time is money' },
   { emojis: '🔥🦊', solution: 'Firefox' },
+];
+
+export const triviaQuestions: TriviaQuestion[] = [
+  {
+    question: "What is the capital of France?",
+    options: ["Berlin", "Madrid", "Paris", "Rome"],
+    correctAnswer: "Paris"
+  },
+  {
+    question: "Which planet is known as the Red Planet?",
+    options: ["Earth", "Mars", "Jupiter", "Venus"],
+    correctAnswer: "Mars"
+  },
+  {
+    question: "Who wrote 'To Kill a Mockingbird'?",
+    options: ["Harper Lee", "J.K. Rowling", "Ernest Hemingway", "Mark Twain"],
+    correctAnswer: "Harper Lee"
+  },
+  {
+    question: "What is the largest ocean on Earth?",
+    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+    correctAnswer: "Pacific Ocean"
+  },
+  {
+    question: "In what year did the Titanic sink?",
+    options: ["1905", "1912", "1918", "1923"],
+    correctAnswer: "1912"
+  },
+  {
+    question: "What is the chemical symbol for gold?",
+    options: ["Ag", "Au", "Pb", "Fe"],
+    correctAnswer: "Au"
+  },
+  {
+    question: "Who painted the Mona Lisa?",
+    options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"],
+    correctAnswer: "Leonardo da Vinci"
+  },
+  {
+    question: "What is the hardest natural substance on Earth?",
+    options: ["Gold", "Iron", "Diamond", "Platinum"],
+    correctAnswer: "Diamond"
+  },
+  {
+    question: "How many continents are there?",
+    options: ["5", "6", "7", "8"],
+    correctAnswer: "7"
+  },
+  {
+    question: "Which is the longest river in the world?",
+    options: ["Amazon", "Nile", "Yangtze", "Mississippi"],
+    correctAnswer: "Nile"
+  }
 ];

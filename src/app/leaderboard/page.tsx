@@ -23,6 +23,8 @@ const leaderboardData = [
   { rank: 6, player: 'Frank', game: 'Truth or Dare', score: 760 },
   { rank: 7, player: 'Grace', game: 'Sentence Puzzles', score: 720 },
   { rank: 8, player: 'Heidi', game: 'Tic Tac Toe', score: 650 },
+  { rank: 9, player: 'Ivy', game: 'Quiz Trivia', score: 610 },
+  { rank: 10, player: 'Jack', game: 'Quiz Trivia', score: 580 },
 ];
 
 export default function LeaderboardPage() {
