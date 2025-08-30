@@ -1,5 +1,5 @@
-import type { Game, SentencePuzzle } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater } from 'lucide-react';
+import type { Game, SentencePuzzle, EmojiPuzzle } from '@/lib/types';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -43,6 +43,12 @@ export const games: Game[] = [
     description: 'Act out words and phrases for your friends to guess.',
     href: '/charades',
     icon: Theater,
+  },
+  {
+    title: 'Emoji Pictionary',
+    description: 'Guess the word or phrase from the emojis.',
+    href: '/emoji-pictionary',
+    icon: Smile,
   }
 ];
 
@@ -118,4 +124,17 @@ export const sentencePuzzles: SentencePuzzle[] = [
     puzzleContent: "What has to be broken before you can use it?",
     solution: "An egg",
   },
+];
+
+export const emojiPuzzles: EmojiPuzzle[] = [
+  { emojis: '👩‍🍳📖', solution: 'Cookbook' },
+  { emojis: '⭐🐟', solution: 'Starfish' },
+  { emojis: '🍎🥧', solution: 'Apple pie' },
+  { emojis: '🏠🎈', solution: 'Up' },
+  { emojis: '🕷️👨', solution: 'Spiderman' },
+  { emojis: '👻busters', solution: 'Ghostbusters' },
+  { emojis: '🍔👑', solution: 'Burger King' },
+  { emojis: '🗼❤️', solution: 'Paris' },
+  { emojis: '⏰➡️💰', solution: 'Time is money' },
+  { emojis: '🔥🦊', solution: 'Firefox' },
 ];

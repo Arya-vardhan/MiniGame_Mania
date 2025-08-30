@@ -17,3 +17,8 @@ export interface SentencePuzzle {
   puzzleContent: string;
   solution: string;
 }
+
+export interface EmojiPuzzle {
+    emojis: string;
+    solution: string;
+}
