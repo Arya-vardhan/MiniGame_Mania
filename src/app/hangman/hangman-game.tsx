@@ -10,17 +10,19 @@ import { cn } from '@/lib/utils';
 const MAX_INCORRECT_GUESSES = 6;
 
 const HANGMAN_PARTS = [
+    // The gallows itself
     <line key="gallows-base" x1="10" y1="180" x2="100" y2="180" stroke="currentColor" strokeWidth="4" />,
     <line key="gallows-pole" x1="40" y1="180" x2="40" y2="20" stroke="currentColor" strokeWidth="4" />,
-    <line key="gallows-beam" x1="40" y1="20" x2="120" y2="20" stroke="currentColor" strokeWidth="4},
+    <line key="gallows-beam" x1="40" y1="20" x2="120" y2="20" stroke="currentColor" strokeWidth="4" />,
     <line key="gallows-rope" x1="120" y1="20" x2="120" y2="50" stroke="currentColor" strokeWidth="4" />,
+    // The hangman parts based on incorrect guesses
     <circle key="head" cx="120" cy="70" r="20" stroke="currentColor" strokeWidth="4" fill="none" />,
     <line key="body" x1="120" y1="90" x2="120" y2="140" stroke="currentColor" strokeWidth="4" />,
     <line key="left-arm" x1="120" y1="100" x2="100" y2="120" stroke="currentColor" strokeWidth="4" />,
     <line key="right-arm" x1="120" y1="100" x2="140" y2="120" stroke="currentColor" strokeWidth="4" />,
     <line key="left-leg" x1="120" y1="140" x2="100" y2="160" stroke="currentColor" strokeWidth="4" />,
     <line key="right-leg" x1="120" y1="140" x2="140" y2="160" stroke="currentColor" strokeWidth="4" />,
-].slice(0, MAX_INCORRECT_GUESSES + 4); // A bit of a hack to make it work with the logic. First 4 are the gallows.
+];
 
 
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -78,7 +80,10 @@ export default function HangmanGame() {
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-8">
                 <svg viewBox="0 0 200 200" className="w-48 h-48 text-foreground">
-                    {HANGMAN_PARTS.slice(0, 4 + incorrectGuesses)}
+                    {/* Gallows structure */}
+                    {HANGMAN_PARTS.slice(0, 4)}
+                    {/* Hangman body parts */}
+                    {HANGMAN_PARTS.slice(4, 4 + incorrectGuesses)}
                 </svg>
 
                 <div className="flex justify-center gap-2 text-3xl font-bold tracking-widest">
