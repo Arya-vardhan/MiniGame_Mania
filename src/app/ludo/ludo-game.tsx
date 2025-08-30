@@ -103,10 +103,10 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
                         cellBg = 'bg-gray-100';
                     }
 
-                    if ( (r > 0 && r < 6 && c > 0 && c < 6) ) cellBg = playerColors.green.base;
-                    if ( (r > 0 && r < 6 && c > 8 && c < 14) ) cellBg = playerColors.yellow.base;
-                    if ( (r > 8 && r < 14 && c > 0 && c < 6) ) cellBg = playerColors.red.base;
-                    if ( (r > 8 && r < 14 && c > 8 && c < 14) ) cellBg = playerColors.blue.base;
+                    if ( (r >= 0 && r < 6 && c >= 0 && c < 6) ) cellBg = playerColors.green.base;
+                    if ( (r >= 0 && r < 6 && c > 8 && c <= 14) ) cellBg = playerColors.yellow.base;
+                    if ( (r > 8 && r <= 14 && c >= 0 && c < 6) ) cellBg = playerColors.red.base;
+                    if ( (r > 8 && r <= 14 && c > 8 && c <= 14) ) cellBg = playerColors.blue.base;
 
                     for (const color of ['green', 'yellow', 'blue', 'red'] as PlayerColor[]) {
                          if (finalPathCoordinates[color].some(p => p.r === r && p.c === c)) {
@@ -116,10 +116,10 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
                         }
                     }
                     
-                    if (pathIndex === playerStartPositions.green) isStart = true;
-                    if (pathIndex === playerStartPositions.yellow) isStart = true;
-                    if (pathIndex === playerStartPositions.blue) isStart = true;
-                    if (pathIndex === playerStartPositions.red) isStart = true;
+                    if (pathIndex === playerStartPositions.green -1) isStart = true;
+                    if (pathIndex === playerStartPositions.yellow -1) isStart = true;
+                    if (pathIndex === playerStartPositions.blue -1) isStart = true;
+                    if (pathIndex === playerStartPositions.red -1) isStart = true;
 
                     const boardIndex = pathCoordinates.findIndex(p => p.r === r && p.c === c);
                     const isSafe = safePositions.includes(boardIndex + 1);
@@ -160,23 +160,23 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
                 </div>
 
                 {/* Player Bases */}
-                <div className="absolute top-0 left-0 w-2/5 h-2/5 p-4">
-                    <div className="w-full h-full bg-white rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2 border-2 border-green-500">
+                <div className="absolute top-2 left-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
+                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-green-500">
                         {players[0].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-green-500 border-2 border-green-700 ${currentPlayerColor === 'green' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('green', i)}></div>)}
                     </div>
                 </div>
-                 <div className="absolute top-0 right-0 w-2/5 h-2/5 p-4">
-                    <div className="w-full h-full bg-white rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2 border-2 border-yellow-500">
+                 <div className="absolute top-2 right-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
+                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-yellow-500">
                         {players[1].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-yellow-500 border-2 border-yellow-700 ${currentPlayerColor === 'yellow' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('yellow', i)}></div>)}
                     </div>
                 </div>
-                 <div className="absolute bottom-0 right-0 w-2/5 h-2/5 p-4">
-                    <div className="w-full h-full bg-white rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2 border-2 border-blue-500">
+                 <div className="absolute bottom-2 right-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
+                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-blue-500">
                         {players[2].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-blue-500 border-2 border-blue-700 ${currentPlayerColor === 'blue' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('blue', i)}></div>)}
                     </div>
                 </div>
-                <div className="absolute bottom-0 left-0 w-2/5 h-2/5 p-4">
-                    <div className="w-full h-full bg-white rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2 border-2 border-red-500">
+                <div className="absolute bottom-2 left-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
+                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-red-500">
                          {players[3].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-red-500 border-2 border-red-700 ${currentPlayerColor === 'red' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('red', i)}></div>)}
                     </div>
                 </div>
