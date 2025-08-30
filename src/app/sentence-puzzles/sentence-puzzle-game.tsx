@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useActionState } from 'react';
+import { useEffect, useState, useMemo, useActionState, useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { getPuzzleAction } from './actions';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -23,6 +23,7 @@ function SubmitButton() {
 export default function SentencePuzzleGame() {
   const [initialState, setInitialState] = useState({ message: '', puzzle: null, error: null });
   const [state, formAction] = useActionState(getPuzzleAction, initialState);
+  const [isPending, startTransition] = useTransition();
 
   const [userAnswer, setUserAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -30,10 +31,9 @@ export default function SentencePuzzleGame() {
   
   useEffect(() => {
     // Initially load a puzzle
-    const anony = async () => {
+    startTransition(() => {
       formAction();
-    };
-    anony();
+    });
   }, []);
 
   useEffect(() => {
