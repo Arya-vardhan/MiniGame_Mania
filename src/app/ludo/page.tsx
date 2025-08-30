@@ -8,11 +8,11 @@ export const metadata: Metadata = {
 
 export default function LudoPage() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 items-center">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Ludo</h1>
-        <p className="text-muted-foreground">
-          The classic game of Ludo. A full game is coming soon!
+        <h1 className="text-3xl font-bold tracking-tight text-center">Ludo</h1>
+        <p className="text-muted-foreground text-center">
+          The classic game of Ludo. Can you get all your pieces home?
         </p>
       </div>
       <LudoGame />
