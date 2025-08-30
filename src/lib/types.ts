@@ -11,3 +11,9 @@ export interface User {
   name: string;
   age: number | null;
 }
+
+export interface SentencePuzzle {
+  puzzleType: string;
+  puzzleContent: string;
+  solution: string;
+}

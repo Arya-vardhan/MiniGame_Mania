@@ -1,27 +1,10 @@
 "use server";
 
-import { generateSentencePuzzle } from "@/ai/flows/generate-sentence-puzzle";
-import { z } from "zod";
+import { sentencePuzzles } from "@/lib/constants";
 
-const AgeSchema = z.object({
-  age: z.coerce.number().int().positive("Age must be a positive number.").min(3, "Must be at least 3 years old.").max(120, "Age seems a bit high!"),
-});
-
-export async function getPuzzleAction(prevState: any, formData: FormData) {
-  const validatedFields = AgeSchema.safeParse({
-    age: formData.get("age"),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      message: "Invalid age provided.",
-      error: validatedFields.error.flatten().fieldErrors,
-      puzzle: null,
-    };
-  }
-
+export async function getPuzzleAction() {
   try {
-    const puzzle = await generateSentencePuzzle({ userAge: validatedFields.data.age });
+    const puzzle = sentencePuzzles[Math.floor(Math.random() * sentencePuzzles.length)];
     return {
       message: "Puzzle generated!",
       error: null,
@@ -31,7 +14,7 @@ export async function getPuzzleAction(prevState: any, formData: FormData) {
     console.error(e);
     return {
       message: "Failed to generate puzzle. Please try again.",
-      error: { _errors: ["AI service failed"] },
+      error: { _errors: ["Service failed"] },
       puzzle: null,
     };
   }

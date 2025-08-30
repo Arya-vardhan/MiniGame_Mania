@@ -1,4 +1,4 @@
-import type { Game } from '@/lib/types';
+import type { Game, SentencePuzzle } from '@/lib/types';
 import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater } from 'lucide-react';
 
 export const games: Game[] = [
@@ -80,4 +80,42 @@ export const hangmanWords: string[] = [
     'function', 'variable', 'constant', 'array', 'object', 'class', 'module',
     'database', 'query', 'schema', 'server', 'client', 'network', 'protocol',
     'authentication', 'authorization', 'encryption', 'security', 'vulnerability',
+];
+
+export const charades = {
+  "Movie": ["Titanic", "Jurassic Park", "The Matrix", "Star Wars", "Pulp Fiction", "Forrest Gump"],
+  "TV Show": ["Friends", "The Office", "Game of Thrones", "Breaking Bad", "Stranger Things"],
+  "Object": ["Telescope", "Guitar", "Microwave", "Stapler", "Slinky", "Yo-yo"],
+  "Animal": ["Monkey", "Elephant", "Penguin", "Kangaroo", "Octopus", "T-Rex"],
+  "Action": ["Typing", "Fishing", "Playing basketball", "Ballet dancing", "Doing laundry"],
+  "Person": ["Albert Einstein", "Beyonce", "Michael Jackson", "Harry Potter", "Darth Vader"],
+  "Song": ["Bohemian Rhapsody", "Stayin' Alive", "Single Ladies", "Baby Shark", "YMCA"],
+};
+
+export const sentencePuzzles: SentencePuzzle[] = [
+  {
+    puzzleType: "Fill in the Blank",
+    puzzleContent: "A wet bird never flies at [_].",
+    solution: "night",
+  },
+  {
+    puzzleType: "Word Unscramble",
+    puzzleContent: "Unscramble 'RADC' to find a vehicle.",
+    solution: "car",
+  },
+  {
+    puzzleType: "Riddle",
+    puzzleContent: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
+    solution: "A map",
+  },
+  {
+    puzzleType: "Fill in the Blank",
+    puzzleContent: "The early bird catches the [_].",
+    solution: "worm",
+  },
+  {
+    puzzleType: "Riddle",
+    puzzleContent: "What has to be broken before you can use it?",
+    solution: "An egg",
+  },
 ];
