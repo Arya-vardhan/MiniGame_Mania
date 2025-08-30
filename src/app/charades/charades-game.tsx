@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useState, useEffect, useCallback, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { getCharadeAction } from './actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -24,7 +24,7 @@ function SubmitButton() {
 
 export default function CharadesGame() {
   const [initialState, setInitialState] = useState({ message: '', charade: null, error: null });
-  const [state, formAction] = useFormState(getCharadeAction, initialState);
+  const [state, formAction] = useActionState(getCharadeAction, initialState);
 
   const [category, setCategory] = useState(categories[0]);
   const [gameState, setGameState] = useState<'setup' | 'playing' | 'end'>('setup');
