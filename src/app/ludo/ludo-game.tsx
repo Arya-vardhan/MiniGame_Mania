@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dices, RotateCcw } from 'lucide-react';
+import { Dices, RotateCcw, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type PlayerColor = 'green' | 'yellow' | 'blue' | 'red';
@@ -14,9 +14,9 @@ type Player = {
 
 const playerColors: Record<PlayerColor, { base: string, piece: string, path: string, text: string }> = {
     green: { base: 'bg-green-200', piece: 'bg-green-500', path: 'bg-green-300', text: 'text-green-700' },
-    yellow: { base: 'bg-yellow-200', piece: 'bg-yellow-500', path: 'bg-yellow-300', text: 'text-yellow-700' },
+    yellow: { base: 'bg-yellow-200', piece: 'bg-yellow-400', path: 'bg-yellow-300', text: 'text-yellow-700' },
     blue: { base: 'bg-blue-200', piece: 'bg-blue-500', path: 'bg-blue-300', text: 'text-blue-700' },
-    red: { base: 'bg-red-200', piece: 'bg-red-500', path: 'bg-red-300', text: 'text-red-700' },
+    red: { base: 'bg-red-200', piece: 'bg-red-500', path: 'bg-red-400', text: 'text-red-700' },
 };
 
 const playerStartPositions: Record<PlayerColor, number> = {
@@ -26,43 +26,48 @@ const playerStartPositions: Record<PlayerColor, number> = {
   red: 39,
 };
 
+// Positions on the 52-tile path that are safe.
 const safePositions = [0, 8, 13, 21, 26, 34, 39, 47];
 
+// Maps a position on the 52-tile path to a grid coordinate {r, c}.
 const pathCoordinates = [
+    // Green path
     { r: 6, c: 1 }, { r: 6, c: 2 }, { r: 6, c: 3 }, { r: 6, c: 4 }, { r: 6, c: 5 },
     { r: 5, c: 6 }, { r: 4, c: 6 }, { r: 3, c: 6 }, { r: 2, c: 6 }, { r: 1, c: 6 },
     { r: 0, c: 6 }, { r: 0, c: 7 }, { r: 0, c: 8 },
+    // Yellow path
     { r: 1, c: 8 }, { r: 2, c: 8 }, { r: 3, c: 8 }, { r: 4, c: 8 }, { r: 5, c: 8 },
     { r: 6, c: 9 }, { r: 6, c: 10 }, { r: 6, c: 11 }, { r: 6, c: 12 }, { r: 6, c: 13 },
     { r: 6, c: 14 }, { r: 7, c: 14 }, { r: 8, c: 14 },
+    // Blue path
     { r: 8, c: 13 }, { r: 8, c: 12 }, { r: 8, c: 11 }, { r: 8, c: 10 }, { r: 8, c: 9 },
     { r: 9, c: 8 }, { r: 10, c: 8 }, { r: 11, c: 8 }, { r: 12, c: 8 }, { r: 13, c: 8 },
     { r: 14, c: 8 }, { r: 14, c: 7 }, { r: 14, c: 6 },
+    // Red path
     { r: 13, c: 6 }, { r: 12, c: 6 }, { r: 11, c: 6 }, { r: 10, c: 6 }, { r: 9, c: 6 },
     { r: 8, c: 5 }, { r: 8, c: 4 }, { r: 8, c: 3 }, { r: 8, c: 2 }, { r: 8, c: 1 },
     { r: 8, c: 0 }, { r: 7, c: 0 },
 ];
 
 const finalPathCoordinates: Record<PlayerColor, { r: number; c: number }[]> = {
-    green: [ { r: 7, c: 1 }, { r: 7, c: 2 }, { r: 7, c: 3 }, { r: 7, c: 4 }, { r: 7, c: 5 }, {r: 7, c: 6} ],
+    green: [ { r: 7, c: 1 }, { r: 7, c: 2 }, { r: 7, c: 3 }, { r: 7, c: 4 }, { r: 7, c: 5 }, { r: 7, c: 6 } ],
     yellow: [ { r: 1, c: 7 }, { r: 2, c: 7 }, { r: 3, c: 7 }, { r: 4, c: 7 }, { r: 5, c: 7 }, { r: 6, c: 7 } ],
     blue: [ { r: 7, c: 13 }, { r: 7, c: 12 }, { r: 7, c: 11 }, { r: 7, c: 10 }, { r: 7, c: 9 }, { r: 7, c: 8 } ],
     red: [ { r: 13, c: 7 }, { r: 12, c: 7 }, { r: 11, c: 7 }, { r: 10, c: 7 }, { r: 9, c: 7 }, { r: 8, c: 7 } ],
 };
 
+// Get grid coordinate for a piece
 const getPiecePosition = (player: Player, pieceIndex: number) => {
     const pos = player.pieces[pieceIndex];
-    if (pos === -1 || pos > 58) return null; // In base or finished
+    if (pos === -1 || pos > 58) return null;
 
-    if (pos >= 52 && pos <= 57) { // Final path
+    if (pos >= 52) { // Final path
         return finalPathCoordinates[player.color][pos - 52];
     }
     
-    // On main board
     const boardIndex = (pos + playerStartPositions[player.color]) % 52;
     return pathCoordinates[boardIndex];
 };
-
 
 const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Player[]; onPieceClick: (color: PlayerColor, pieceIndex: number) => void, currentPlayerColor: PlayerColor }) => {
     
@@ -80,81 +85,116 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     }
     
     return (
-        <div className="relative aspect-square w-full max-w-lg mx-auto bg-card border-8 border-gray-300 shadow-lg p-2">
-            <div className="grid grid-cols-15 grid-rows-15 h-full w-full">
-                {/* Player Bases */}
-                <div className="col-span-6 row-span-6 bg-green-200 flex items-center justify-center rounded-lg p-2"><div className="w-full h-full bg-green-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-4">{players[0].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-md cursor-pointer ${playerColors.green.piece} ${currentPlayerColor === 'green' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('green', i)}></div>)}</div></div>
-                <div className="col-span-6 row-span-6 col-start-10 bg-yellow-200 flex items-center justify-center rounded-lg p-2"><div className="w-full h-full bg-yellow-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-4">{players[1].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-md cursor-pointer ${playerColors.yellow.piece} ${currentPlayerColor === 'yellow' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('yellow', i)}></div>)}</div></div>
-                <div className="col-span-6 row-span-6 row-start-10 bg-blue-200 flex items-center justify-center rounded-lg p-2"><div className="w-full h-full bg-blue-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-4">{players[2].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-md cursor-pointer ${playerColors.blue.piece} ${currentPlayerColor === 'blue' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('blue', i)}></div>)}</div></div>
-                <div className="col-span-6 row-span-6 col-start-10 row-start-10 bg-red-200 flex items-center justify-center rounded-lg p-2"><div className="w-full h-full bg-red-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-4">{players[3].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-md cursor-pointer ${playerColors.red.piece} ${currentPlayerColor === 'red' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('red', i)}></div>)}</div></div>
+        <div className="grid grid-cols-3 gap-4">
+            {/* Game Board */}
+            <div className="col-span-2 bg-white p-2 border-2 border-gray-200 rounded-lg shadow-inner">
+                <div className="grid grid-cols-15 grid-rows-15 w-full aspect-square">
+                    {Array.from({length: 15*15}).map((_, index) => {
+                        const r = Math.floor(index / 15);
+                        const c = index % 15;
+                        
+                        let isPath = false;
+                        let isFinalPath = false;
+                        let pathColor = '';
+                        let isStart = false;
 
-                {/* Center Home */}
-                <div className="col-span-3 row-span-3 col-start-7 row-start-7 bg-card flex items-center justify-center overflow-hidden">
-                    <div className="w-full h-full relative">
-                        <div className="absolute w-0 h-0 border-t-[50px] border-t-transparent border-r-[50px] border-r-green-500 border-b-[50px] border-b-transparent top-1/2 left-0 -translate-y-1/2"></div>
-                        <div className="absolute w-0 h-0 border-l-[50px] border-l-transparent border-t-[50px] border-t-yellow-500 border-r-[50px] border-r-transparent top-0 left-1/2 -translate-x-1/2"></div>
-                        <div className="absolute w-0 h-0 border-b-[50px] border-b-transparent border-l-[50px] border-l-blue-500 border-t-[50px] border-t-transparent top-1/2 right-0 -translate-y-1/2"></div>
-                        <div className="absolute w-0 h-0 border-r-[50px] border-r-transparent border-b-[50px] border-b-red-500 border-l-[50px] border-l-transparent bottom-0 left-1/2 -translate-x-1/2"></div>
+                        const pathIndex = pathCoordinates.findIndex(p => p.r === r && p.c === c);
+                        if (pathIndex !== -1) {
+                            isPath = true;
+                        }
+
+                        for (const color in finalPathCoordinates) {
+                            if (finalPathCoordinates[color as PlayerColor].some(p => p.r === r && p.c === c)) {
+                                isFinalPath = true;
+                                pathColor = playerColors[color as PlayerColor].path;
+                                break;
+                            }
+                        }
+
+                         // Color the main paths
+                        if (c >= 1 && c <= 5 && r === 6) { pathColor = 'bg-green-200'; isStart = c===1; } // Green start path
+                        if (r >= 1 && r <= 5 && c === 8) { pathColor = 'bg-yellow-200'; isStart = r===1; } // Yellow start path
+                        if (c >= 9 && c <= 13 && r === 8) { pathColor = 'bg-blue-200'; isStart = c===13; } // Blue start path
+                        if (r >= 9 && r <= 13 && c === 6) { pathColor = 'bg-red-200'; isStart = r===13; } // Red start path
+
+                        // Color branching paths
+                        if(r >=1 && r<=5 && c===6) pathColor = 'bg-green-200';
+                        if(c >=9 && c<=13 && r===6) pathColor = 'bg-yellow-200';
+                        if(r >=9 && r<=13 && c===8) pathColor = 'bg-blue-200';
+                        if(c >=1 && c<=5 && r===8) pathColor = 'bg-red-200';
+
+                        // Arrows for home entry
+                        if(r===7 && c===1) pathColor = 'bg-green-300';
+                        if(c===7 && r===1) pathColor = 'bg-yellow-300';
+                        if(r===7 && c===13) pathColor = 'bg-blue-300';
+                        if(c===7 && r===13) pathColor = 'bg-red-300';
+
+
+                        const boardIndex = pathCoordinates.findIndex(p => p.r === r && p.c === c);
+                        const isSafe = safePositions.includes(boardIndex) && !isStart;
+                        const pieces = getPiecesAt(r, c);
+
+                        return (
+                            <div key={index} style={{gridRow: r+1, gridColumn: c+1}} className={cn("border border-gray-200 relative", pathColor)}>
+                                {(isSafe || isStart) && <Star className="absolute text-xs text-gray-500 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 fill-gray-500" />}
+                                <div className="relative w-full h-full flex items-center justify-center">
+                                    {pieces.map((piece, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={cn(
+                                                "absolute rounded-full w-4/5 h-4/5 shadow-md border-2 border-gray-100 cursor-pointer",
+                                                playerColors[piece.color].piece,
+                                                currentPlayerColor === piece.color ? 'ring-2 ring-offset-1 ring-black' : ''
+                                            )}
+                                            onClick={() => onPieceClick(piece.color, piece.pieceIndex)}
+                                            style={{
+                                                transform: `translate(${idx * 2}px, ${-idx * 2}px)`
+                                            }}
+                                        >
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )
+                    })}
+                     {/* Center Home */}
+                    <div className="col-start-7 row-start-7 col-span-3 row-span-3 bg-white flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-full relative">
+                            <div className="absolute w-0 h-0 border-t-[40px] border-t-transparent border-r-[40px] border-r-yellow-400 border-b-[40px] border-b-transparent top-1/2 left-0 -translate-y-1/2 rotate-[-45deg]"></div>
+                            <div className="absolute w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-blue-500 border-r-[40px] border-r-transparent top-0 left-1/2 -translate-x-1/2 rotate-[-45deg]"></div>
+                            <div className="absolute w-0 h-0 border-b-[40px] border-b-transparent border-l-[40px] border-l-red-500 border-t-[40px] border-t-transparent top-1/2 right-0 -translate-y-1/2 rotate-[-45deg]"></div>
+                            <div className="absolute w-0 h-0 border-r-[40px] border-r-transparent border-b-[40px] border-b-green-500 border-l-[40px] border-l-transparent bottom-0 left-1/2 -translate-x-1/2 rotate-[-45deg]"></div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                {/* Paths */}
-                {Array.from({length: 15*15}).map((_, index) => {
-                    const r = Math.floor(index / 15);
-                    const c = index % 15;
-                    
-                    const isPath = pathCoordinates.some(p => p.r === r && p.c === c);
-                    const isFinalPath = Object.values(finalPathCoordinates).flat().some(p => p.r === r && p.c === c);
-                    let bgColor = 'bg-gray-100';
-
-                    if (isPath || isFinalPath) {
-                        bgColor = 'bg-white';
-                    }
-
-                    // Main path color blocks
-                    if(r >= 6 && r <= 8 && (c < 6 || c > 8)) bgColor = 'bg-gray-100';
-                    if(c >= 6 && c <= 8 && (r < 6 || r > 8)) bgColor = 'bg-gray-100';
-                    if((r >= 6 && r <= 8) && (c >= 6 && c <= 8)) bgColor = 'bg-transparent';
-
-
-                    if (pathCoordinates.some(p => p.r === r && p.c === c)) bgColor = 'bg-white'
-                    if (r === 7 && c > 0 && c < 6) bgColor = playerColors.green.path;
-                    if (c === 7 && r > 0 && r < 6) bgColor = playerColors.yellow.path;
-                    if (r === 7 && c > 8 && c < 14) bgColor = playerColors.blue.path;
-                    if (c === 7 && r > 8 && r < 14) bgColor = playerColors.red.path;
-                    
-                    // Start squares
-                    if (r === 6 && c === 1) bgColor = playerColors.green.path;
-                    if (r === 1 && c === 8) bgColor = playerColors.yellow.path;
-                    if (r === 8 && c === 13) bgColor = playerColors.blue.path;
-                    if (r === 13 && c === 6) bgColor = playerColors.red.path;
-
-                    const boardIndex = pathCoordinates.findIndex(p => p.r === r && p.c === c);
-                    const isSafe = safePositions.includes(boardIndex);
-                    
-                    const pieces = getPiecesAt(r, c);
-
-                    return (
-                        <div key={index} style={{gridRow: r+1, gridColumn: c+1}} className={cn("border border-gray-200 relative", bgColor)}>
-                           {isSafe && <div className="absolute text-xs text-gray-400 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">★</div>}
-                           <div className="relative w-full h-full flex items-center justify-center">
-                            {pieces.length > 0 && (
-                                <div
-                                    className={cn(
-                                        "rounded-full w-4/5 h-4/5 shadow-md border-2 border-white cursor-pointer",
-                                        playerColors[pieces[0].color].piece,
-                                        pieces.length > 1 && "ring-2 ring-white",
-                                        currentPlayerColor === pieces[0].color ? 'ring-2 ring-offset-1 ring-black' : ''
-                                    )}
-                                    onClick={() => onPieceClick(pieces[0].color, pieces[0].pieceIndex)}
-                                >
-                                  {pieces.length > 1 && <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white font-bold text-xs">{pieces.length}</span>}
-                                </div>
-                            )}
-                           </div>
-                        </div>
-                    )
-                })}
+            {/* Player Areas */}
+            <div className="col-span-1 flex flex-col gap-4">
+                {/* Green Base */}
+                <div className="w-full aspect-square bg-green-200 rounded-lg p-2 flex items-center justify-center shadow-md">
+                    <div className="w-full h-full bg-green-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2">
+                        {players[0].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-green-500 border-4 border-black ${currentPlayerColor === 'green' ? 'ring-2 ring-offset-2 ring-white' : ''}`} onClick={() => onPieceClick('green', i)}></div>)}
+                    </div>
+                </div>
+                {/* Blue Base */}
+                 <div className="w-full aspect-square bg-blue-200 rounded-lg p-2 flex items-center justify-center shadow-md">
+                    <div className="w-full h-full bg-blue-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2">
+                        {players[2].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-blue-500 ${currentPlayerColor === 'blue' ? 'ring-2 ring-offset-2 ring-white' : ''}`} onClick={() => onPieceClick('blue', i)}></div>)}
+                    </div>
+                </div>
+                 {/* Yellow Base */}
+                <div className="w-full aspect-square bg-yellow-200 rounded-lg p-2 flex items-center justify-center shadow-md">
+                    <div className="w-full h-full bg-yellow-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2">
+                        {players[1].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-yellow-400 ${currentPlayerColor === 'yellow' ? 'ring-2 ring-offset-2 ring-white' : ''}`} onClick={() => onPieceClick('yellow', i)}></div>)}
+                    </div>
+                </div>
+                {/* Red Base not in image, but let's add it for completeness */}
+                <div className="w-full aspect-square bg-red-200 rounded-lg p-2 flex items-center justify-center shadow-md">
+                    <div className="w-full h-full bg-red-300 rounded-md grid grid-cols-2 grid-rows-2 gap-2 p-2">
+                         {players[3].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-red-500 ${currentPlayerColor === 'red' ? 'ring-2 ring-offset-2 ring-white' : ''}`} onClick={() => onPieceClick('red', i)}></div>)}
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -173,91 +213,111 @@ export default function LudoGame() {
     const [diceValue, setDiceValue] = useState<number | null>(null);
     const [message, setMessage] = useState("Player 1 (Green) to start!");
     const [winner, setWinner] = useState<PlayerColor | null>(null);
+    const [diceRolling, setDiceRolling] = useState(false);
 
     const rollDice = () => {
-        if(winner) return;
-        const roll = Math.floor(Math.random() * 6) + 1;
-        setDiceValue(roll);
+        if(winner || diceRolling) return;
+        setDiceRolling(true);
+        let rollCount = 0;
+        const interval = setInterval(() => {
+            setDiceValue(Math.floor(Math.random() * 6) + 1);
+            rollCount++;
+            if (rollCount > 10) {
+                clearInterval(interval);
+                const finalRoll = Math.floor(Math.random() * 6) + 1;
+                setDiceValue(finalRoll);
+                setDiceRolling(false);
+                handleDiceRoll(finalRoll);
+            }
+        }, 100);
+    };
 
+    const handleDiceRoll = (roll: number) => {
         const currentPlayer = players[currentPlayerIndex];
         const movablePieces = currentPlayer.pieces.filter(p => p !== -1 && (p + roll) <= 58);
         const canMoveFromHome = roll === 6 && currentPlayer.pieces.some(p => p === -1);
+        const piecesOnBoard = currentPlayer.pieces.filter(p => p !== -1).length;
 
-        if (movablePieces.length === 0 && !canMoveFromHome) {
-            setMessage(`Player ${currentPlayerIndex + 1} rolled ${roll} but cannot move. Next player.`);
+        // Automatically move piece if only one is on board
+        if (piecesOnBoard === 1 && movablePieces.length === 1 && roll !== 6) {
+             const pieceIndex = currentPlayer.pieces.findIndex(p => p === movablePieces[0]);
+             setTimeout(() => movePiece(currentPlayer.color, pieceIndex, roll), 500);
+        } else if (movablePieces.length === 0 && !canMoveFromHome) {
+            setMessage(`Player ${currentPlayerIndex + 1} rolled ${roll} but cannot move.`);
              setTimeout(() => {
                 nextTurn();
             }, 1500);
-            return;
+        } else {
+            setMessage(`Player ${currentPlayerIndex + 1} (${currentPlayer.color}) rolled a ${roll}. Select a piece.`);
         }
-
-        setMessage(`Player ${currentPlayerIndex + 1} (${currentPlayer.color}) rolled a ${roll}. Select a piece.`);
     };
 
-    const movePiece = (color: PlayerColor, pieceIndex: number) => {
-        if (winner || players[currentPlayerIndex].color !== color || !diceValue) {
+    const movePiece = (color: PlayerColor, pieceIndex: number, roll?: number) => {
+        const moveValue = roll || diceValue;
+        if (winner || players[currentPlayerIndex].color !== color || !moveValue) {
             return;
         }
 
         let newPlayers = JSON.parse(JSON.stringify(players));
         let player = newPlayers.find((p: Player) => p.color === color)!;
         let piecePos = player.pieces[pieceIndex];
+        let messageForUser = "";
 
-        // Move from home
-        if (piecePos === -1) {
-            if (diceValue === 6) {
+        if (piecePos === -1) { // Move from home
+            if (moveValue === 6) {
                 player.pieces[pieceIndex] = 0;
-                setMessage(`Player ${currentPlayerIndex + 1} moved a piece out! Roll again.`);
-                setDiceValue(null); // Allow re-roll
+                messageForUser = `Player ${currentPlayerIndex + 1} moved a piece out! Roll again.`;
+                setDiceValue(null); 
             } else {
                 setMessage('You need a 6 to move a piece from home.');
+                return;
             }
-            setPlayers(newPlayers);
-            return;
-        }
+        } else { // Move on board
+            const newPos = piecePos + moveValue;
+            if (newPos > 58) {
+                setMessage('This piece cannot move that far. Try another piece.');
+                return;
+            }
+            player.pieces[pieceIndex] = newPos;
 
-        // Move on board
-        const newPos = piecePos + diceValue;
-        if (newPos > 58) {
-            setMessage('This piece cannot move that far. Try another piece.');
-            return;
-        }
-        player.pieces[pieceIndex] = newPos;
-
-        // Capture logic
-        if (newPos < 52) { // Only capture on main path
-            const boardIndex = (newPos + playerStartPositions[player.color]) % 52;
-            if(!safePositions.includes(boardIndex)){
-                newPlayers.forEach((otherPlayer: Player) => {
-                    if (otherPlayer.color !== color) {
-                        otherPlayer.pieces = otherPlayer.pieces.map((p: number) => {
-                            if (p !== -1 && p < 52) {
-                                const otherBoardIndex = (p + playerStartPositions[otherPlayer.color]) % 52;
-                                if (otherBoardIndex === boardIndex) {
-                                    return -1; // Send back to home
+            // Capture logic
+            if (newPos < 52) {
+                const boardIndex = (newPos + playerStartPositions[player.color]) % 52;
+                if(!safePositions.includes(boardIndex)){
+                    newPlayers.forEach((otherPlayer: Player) => {
+                        if (otherPlayer.color !== color) {
+                            otherPlayer.pieces = otherPlayer.pieces.map((p: number, idx: number) => {
+                                if (p !== -1 && p < 52) {
+                                    const otherBoardIndex = (p + playerStartPositions[otherPlayer.color]) % 52;
+                                    if (otherBoardIndex === boardIndex) {
+                                        return -1; // Send back to home
+                                    }
                                 }
-                            }
-                            return p;
-                        });
-                    }
-                });
+                                return p;
+                            });
+                        }
+                    });
+                }
+            }
+            
+            if(newPos === 58) {
+                 messageForUser = `Player ${currentPlayerIndex + 1} got a piece home! Roll again.`
+                 setDiceValue(null);
+            } else if (moveValue === 6) {
+                messageForUser = `Player ${currentPlayerIndex + 1} got a 6! Roll again.`
+                setDiceValue(null);
+            } else {
+                nextTurn();
             }
         }
         
         setPlayers(newPlayers);
+        if(messageForUser) setMessage(messageForUser);
 
-        // Check for winner
+
         if(player.pieces.every((p: number) => p === 58)) {
             setWinner(player.color);
             setMessage(`Player ${currentPlayerIndex + 1} (${player.color}) wins!`);
-            return;
-        }
-
-        if (diceValue !== 6 && newPos < 58) {
-            nextTurn();
-        } else {
-            setDiceValue(null);
-            setMessage(`Player ${currentPlayerIndex + 1} got a 6 or finished a piece! Roll again.`);
         }
     }
 
@@ -278,32 +338,34 @@ export default function LudoGame() {
 
 
     return (
-        <div className="flex flex-col items-center gap-6 p-4 bg-blue-50 rounded-xl">
-            <Card className="w-full max-w-lg">
+        <div className="flex flex-col items-center gap-6 p-4 bg-gray-100 rounded-xl">
+            <Card className="w-full max-w-4xl">
                 <CardHeader>
-                    <CardTitle className="text-center">Ludo Game</CardTitle>
+                    <CardTitle className="text-center text-3xl font-bold">Ludo Championship</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col items-center gap-4">
                     <div className="flex items-center gap-4">
-                        <Button onClick={rollDice} disabled={diceValue !== null && !winner} >
-                            <Dices className="mr-2 h-5 w-5" /> {winner ? 'Game Over' : 'Roll Dice'}
+                        <Button onClick={rollDice} disabled={(diceValue !== null && !diceRolling) || !!winner} className="w-40 h-12 text-lg">
+                            <Dices className="mr-2 h-6 w-6" /> {winner ? 'Game Over' : (diceRolling ? 'Rolling...' : 'Roll Dice')}
                         </Button>
-                        {diceValue && <div className="text-4xl font-bold p-4 border rounded-lg bg-white">{diceValue}</div>}
+                        <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-white w-24 h-24 flex items-center justify-center">{diceValue}</div>
                     </div>
                      {winner ? (
-                        <p className={cn("font-semibold text-lg", playerColors[winner].text)}>🎉 {message} 🎉</p>
+                        <p className={cn("font-semibold text-xl", playerColors[winner].text)}>🎉 {message} 🎉</p>
                      ) : (
-                        <p className={cn("font-semibold", playerColors[players[currentPlayerIndex].color].text)}>{message}</p>
+                        <p className={cn("font-semibold text-lg h-6", playerColors[players[currentPlayerIndex].color].text)}>{message}</p>
                      )}
                 </CardContent>
             </Card>
             
-            <LudoBoard players={players} onPieceClick={movePiece} currentPlayerColor={players[currentPlayerIndex].color}/>
+            <LudoBoard players={players} onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} currentPlayerColor={players[currentPlayerIndex].color}/>
             
-            <Button onClick={resetGame} variant="default" size="lg">
-                <RotateCcw className="mr-2 h-4 w-4" />
+            <Button onClick={resetGame} variant="default" size="lg" className="mt-4">
+                <RotateCcw className="mr-2 h-5 w-5" />
                 Reset Game
             </Button>
         </div>
     );
 }
+
+    
