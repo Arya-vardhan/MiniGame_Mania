@@ -38,7 +38,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <SidebarMenu>
             {navLinks.map((link) => (
               <SidebarMenuItem key={link.href}>
-                <Link href={link.href} legacyBehavior passHref>
+                <Link href={link.href}>
                   <SidebarMenuButton
                     isActive={pathname === link.href}
                     tooltip={{ children: link.label }}
