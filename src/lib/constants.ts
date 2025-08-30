@@ -1,5 +1,5 @@
 import type { Game } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall } from 'lucide-react';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -37,6 +37,12 @@ export const games: Game[] = [
     description: 'Guess the word one letter at a time before the time runs out.',
     href: '/hangman',
     icon: ALargeSmall,
+  },
+  {
+    title: 'Charades',
+    description: 'Act out words and phrases for your friends to guess.',
+    href: '/charades',
+    icon: Theater,
   }
 ];
 
