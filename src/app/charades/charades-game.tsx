@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useActionState } from 'react';
+import { useState, useEffect, useCallback, useActionState, useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { getCharadeAction } from './actions';
 import { Button } from '@/components/ui/button';
@@ -25,19 +25,19 @@ function SubmitButton() {
 export default function CharadesGame() {
   const [initialState, setInitialState] = useState({ message: '', charade: null, error: null });
   const [state, formAction] = useActionState(getCharadeAction, initialState);
+  const [isPending, startTransition] = useTransition();
 
   const [category, setCategory] = useState(categories[0]);
   const [gameState, setGameState] = useState<'setup' | 'playing' | 'end'>('setup');
   const [timeLeft, setTimeLeft] = useState(ROUND_TIME);
-
-  const { pending } = useFormStatus();
   
   useEffect(() => {
-    if (state.charade && !pending) {
+    // This effect starts the game once the first charade is fetched.
+    if (state.charade && gameState === 'setup') {
       setGameState('playing');
       setTimeLeft(ROUND_TIME);
     }
-  }, [state.charade, pending]);
+  }, [state.charade, gameState]);
 
   useEffect(() => {
     if (gameState !== 'playing' || timeLeft <= 0) {
@@ -57,14 +57,27 @@ export default function CharadesGame() {
   const handleNextWord = (wasGuessed: boolean) => {
     // In a real multi-team game, you'd track scores here.
     // For now, we just get a new word.
-    const formData = new FormData();
-    formData.append('category', category);
-    formAction(formData);
+    startTransition(() => {
+      const formData = new FormData();
+      formData.append('category', category);
+      formAction(formData);
+    });
   }
 
   const handleEndGame = () => {
     setGameState('setup');
+    // Reset state for a new game
     setInitialState({ message: '', charade: null, error: null });
+  }
+  
+  const handlePlayAgain = () => {
+    const formData = new FormData();
+    formData.append('category', category);
+    startTransition(() => {
+        formAction(formData);
+    });
+    setGameState('playing');
+    setTimeLeft(ROUND_TIME);
   }
 
   if (gameState === 'setup') {
@@ -107,11 +120,14 @@ export default function CharadesGame() {
                  <p className="text-lg">The word was: <span className="font-bold">{state.charade?.word}</span></p>
             </CardContent>
             <CardFooter className="flex-col gap-2">
-                <Button onClick={handleEndGame} size="lg">Play Again</Button>
+                <Button onClick={handlePlayAgain} size="lg">Play Another Round</Button>
+                <Button onClick={handleEndGame} size="lg" variant="outline">Back to Setup</Button>
             </CardFooter>
         </Card>
      )
   }
+
+  const isGettingNextWord = isPending && gameState === 'playing';
 
   return (
     <Card className="w-full max-w-md text-center">
@@ -127,7 +143,7 @@ export default function CharadesGame() {
         <Progress value={(timeLeft / ROUND_TIME) * 100} className="w-full" />
 
         <div className="p-8 bg-muted rounded-lg min-h-[120px] flex items-center justify-center">
-           {pending ? (
+           {isGettingNextWord ? (
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
            ) : (
              <p className="text-3xl font-bold tracking-wider">{state.charade?.word}</p>
@@ -135,10 +151,10 @@ export default function CharadesGame() {
         </div>
       </CardContent>
       <CardFooter className="grid grid-cols-2 gap-4">
-        <Button variant="outline" size="lg" onClick={() => handleNextWord(false)} disabled={pending}>
+        <Button variant="outline" size="lg" onClick={() => handleNextWord(false)} disabled={isGettingNextWord}>
             <SkipForward className="mr-2"/> Skip
         </Button>
-        <Button className="bg-green-600 hover:bg-green-700" size="lg" onClick={() => handleNextWord(true)} disabled={pending}>
+        <Button className="bg-green-600 hover:bg-green-700" size="lg" onClick={() => handleNextWord(true)} disabled={isGettingNextWord}>
             <Check className="mr-2"/> Correct
         </Button>
       </CardFooter>
