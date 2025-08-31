@@ -1,5 +1,5 @@
-import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion, WouldYouRatherQuestion } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows } from 'lucide-react';
+import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion, WouldYouRatherQuestion, NeverHaveIEverQuestion } from '@/lib/types';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows, HelpCircle } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -61,6 +61,12 @@ export const games: Game[] = [
     description: 'Make a tough choice between two challenging scenarios!',
     href: '/would-you-rather',
     icon: GitCompareArrows,
+  },
+  {
+    title: 'Never Have I Ever',
+    description: 'A classic party game of "Never Have I Ever".',
+    href: '/never-have-i-ever',
+    icon: HelpCircle,
   }
 ];
 
@@ -416,4 +422,47 @@ export const wouldYouRatherQuestions: WouldYouRatherQuestion[] = [
   { optionA: "Explore a new planet", optionB: "Explore the deep ocean" },
   { optionA: "Never have to sleep again", optionB: "Be able to eat whatever you want without gaining weight" },
   { optionA: "Be the funniest person alive", optionB: "Be the most intelligent person alive" },
+];
+
+export const neverHaveIEverQuestions: NeverHaveIEverQuestion[] = [
+  "lied about my age.",
+  "pretended to be sick to skip school or work.",
+  "eaten a whole pizza by myself in one sitting.",
+  "spied on my neighbors.",
+  "Googled myself.",
+  "cried during a Disney movie.",
+  "used someone else's toothbrush.",
+  "cut my own hair.",
+  "fallen asleep in a movie theater.",
+  "blamed a fart on someone else.",
+  "lied in a game of 'Never Have I Ever.'",
+  "ignored a call from my parents on purpose.",
+  "re-gifted a present.",
+  "stalked an ex on social media.",
+  "eaten food that fell on the floor.",
+  "pretended I knew what someone was talking about.",
+  "dropped my phone in the toilet.",
+  "told a secret I was supposed to keep.",
+  "sung karaoke.",
+  "danced in an elevator when I was alone.",
+  "cheated on a test.",
+  "been kicked out of a public place.",
+  "lied to get out of a date.",
+  "eaten an entire jar of Nutella.",
+  "had a crush on a friend's sibling.",
+  "pretended to be on the phone to avoid talking to someone.",
+  "forgotten a close friend's birthday.",
+  "tried to use a fake ID.",
+  "broken something and not told anyone.",
+  "worn the same outfit two days in a row.",
+  "eavesdropped on a conversation.",
+  "sent a text to the wrong person.",
+  "been so scared I screamed out loud.",
+  "laughed so hard I cried.",
+  "stayed up all night for no reason.",
+  "binge-watched an entire TV series in one weekend.",
+  "made a silly face at a baby.",
+  "tried to cut my pet's hair.",
+  "lost a bet and had to do something embarrassing.",
+  "pretended to laugh at a joke I didn't get.",
 ];

@@ -33,3 +33,5 @@ export interface WouldYouRatherQuestion {
   optionA: string;
   optionB: string;
 }
+
+export type NeverHaveIEverQuestion = string;
