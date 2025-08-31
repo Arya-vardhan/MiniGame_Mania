@@ -1,5 +1,5 @@
-import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit } from 'lucide-react';
+import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion, WouldYouRatherQuestion } from '@/lib/types';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -55,6 +55,12 @@ export const games: Game[] = [
     description: 'Test your knowledge with a fun trivia quiz.',
     href: '/quiz-trivia',
     icon: BrainCircuit,
+  },
+  {
+    title: 'Would You Rather?',
+    description: 'Make a tough choice between two challenging scenarios!',
+    href: '/would-you-rather',
+    icon: GitCompareArrows,
   }
 ];
 
@@ -196,4 +202,15 @@ export const triviaQuestions: TriviaQuestion[] = [
     options: ["Amazon", "Nile", "Yangtze", "Mississippi"],
     correctAnswer: "Nile"
   }
+];
+
+export const wouldYouRatherQuestions: WouldYouRatherQuestion[] = [
+  { optionA: "Be able to fly", optionB: "Be able to turn invisible" },
+  { optionA: "Have hands for feet", optionB: "Have feet for hands" },
+  { optionA: "Live in a world without music", optionB: "Live in a world without movies" },
+  { optionA: "Be able to talk to animals", optionB: "Be able to speak all human languages" },
+  { optionA: "Give up social media forever", optionB: "Give up watching TV shows and movies forever" },
+  { optionA: "Always be 10 minutes late", optionB: "Always be 20 minutes early" },
+  { optionA: "Live in a house shaped like a triangle", optionB: "Live in a house shaped like a circle" },
+  { optionA: "Have a personal chef", optionB: "Have a personal driver" },
 ];

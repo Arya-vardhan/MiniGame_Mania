@@ -28,3 +28,8 @@ export interface TriviaQuestion {
   options: string[];
   correctAnswer: string;
 }
+
+export interface WouldYouRatherQuestion {
+  optionA: string;
+  optionB: string;
+}
