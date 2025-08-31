@@ -201,20 +201,10 @@ export default function LudoGame() {
     const [diceRolling, setDiceRolling] = useState(false);
 
     const rollDice = () => {
-        if(winner || diceRolling) return;
-        setDiceRolling(true);
-        let rollCount = 0;
-        const interval = setInterval(() => {
-            setDiceValue(Math.floor(Math.random() * 6) + 1);
-            rollCount++;
-            if (rollCount > 10) {
-                clearInterval(interval);
-                const finalRoll = Math.floor(Math.random() * 6) + 1;
-                setDiceValue(finalRoll);
-                setDiceRolling(false);
-                handleDiceRoll(finalRoll);
-            }
-        }, 100);
+        if(winner || diceValue) return;
+        const finalRoll = Math.floor(Math.random() * 6) + 1;
+        setDiceValue(finalRoll);
+        handleDiceRoll(finalRoll);
     };
 
     const handleDiceRoll = (roll: number) => {
