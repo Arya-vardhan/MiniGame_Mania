@@ -323,7 +323,7 @@ export default function LudoGame() {
 
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-gray-50 rounded-xl">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl">
             <LudoBoard players={players} onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} currentPlayerColor={players[currentPlayerIndex].color}/>
             <div className="flex flex-col items-center gap-6">
                 <Card className="w-full max-w-sm">
