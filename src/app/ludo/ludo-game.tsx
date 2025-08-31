@@ -13,10 +13,10 @@ type Player = {
 };
 
 const playerColors: Record<PlayerColor, { base: string, piece: string, path: string, text: string }> = {
-    green: { base: 'bg-green-200', piece: 'bg-green-500', path: 'bg-green-300', text: 'text-green-800' },
-    yellow: { base: 'bg-yellow-200', piece: 'bg-yellow-500', path: 'bg-yellow-300', text: 'text-yellow-800' },
-    blue: { base: 'bg-blue-200', piece: 'bg-blue-500', path: 'bg-blue-300', text: 'text-blue-800' },
-    red: { base: 'bg-red-200', piece: 'bg-red-500', path: 'bg-red-300', text: 'text-red-800' },
+    green: { base: 'bg-green-200', piece: 'bg-green-500', path: 'bg-green-300', text: 'text-green-400' },
+    yellow: { base: 'bg-yellow-200', piece: 'bg-yellow-500', path: 'bg-yellow-300', text: 'text-yellow-400' },
+    blue: { base: 'bg-blue-200', piece: 'bg-blue-500', path: 'bg-blue-300', text: 'text-blue-400' },
+    red: { base: 'bg-red-200', piece: 'bg-red-500', path: 'bg-red-300', text: 'text-red-400' },
 };
 
 
@@ -88,19 +88,19 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     }
     
     return (
-        <div className="relative w-[500px] h-[500px] bg-white p-2 border-4 border-gray-300 rounded-lg shadow-lg">
+        <div className="relative w-[500px] h-[500px] bg-muted/20 p-2 border-4 border-muted/30 rounded-lg shadow-lg">
             <div className="grid grid-cols-15 grid-rows-15 w-full h-full">
                 {Array.from({length: 15*15}).map((_, index) => {
                     const r = Math.floor(index / 15);
                     const c = index % 15;
                     
-                    let cellBg = 'bg-white';
+                    let cellBg = 'bg-transparent';
                     let isFinalPath = false;
                     let isStart = false;
 
                     const pathIndex = pathCoordinates.findIndex(p => p.r === r && p.c === c);
                     if (pathIndex !== -1) {
-                        cellBg = 'bg-gray-100';
+                        cellBg = 'bg-muted/30';
                     }
 
                     if ( (r >= 0 && r < 6 && c >= 0 && c < 6) ) cellBg = playerColors.green.base;
@@ -126,8 +126,8 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
                     const pieces = getPiecesAt(r, c);
 
                     return (
-                        <div key={index} style={{gridRow: r+1, gridColumn: c+1}} className={cn("border border-gray-200 relative", cellBg)}>
-                            {(isSafe || isStart) && <Star className="absolute text-xs text-gray-500 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 fill-gray-400" />}
+                        <div key={index} style={{gridRow: r+1, gridColumn: c+1}} className={cn("border border-muted/20 relative", cellBg)}>
+                            {(isSafe || isStart) && <Star className="absolute text-xs text-muted-foreground/50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 fill-muted-foreground/30" />}
                             <div className="relative w-full h-full flex items-center justify-center">
                                 {pieces.map((piece, idx) => (
                                     <div
@@ -150,7 +150,7 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
                     )
                 })}
                  {/* Center Home */}
-                <div className="col-start-7 row-start-7 col-span-3 row-span-3 bg-white flex items-center justify-center overflow-hidden">
+                <div className="col-start-7 row-start-7 col-span-3 row-span-3 bg-muted/20 flex items-center justify-center overflow-hidden">
                     <div className="w-full h-full relative transform rotate-45">
                         <div className="absolute w-1/2 h-1/2 top-0 left-0 bg-yellow-400"></div>
                         <div className="absolute w-1/2 h-1/2 top-0 right-0 bg-blue-400"></div>
@@ -161,22 +161,22 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
 
                 {/* Player Bases */}
                 <div className="absolute top-2 left-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
-                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-green-500">
+                    <div className="w-full h-full bg-background/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-green-500">
                         {players[0].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-green-500 border-2 border-green-700 ${currentPlayerColor === 'green' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('green', i)}></div>)}
                     </div>
                 </div>
                  <div className="absolute top-2 right-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
-                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-yellow-500">
+                    <div className="w-full h-full bg-background/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-yellow-500">
                         {players[1].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-yellow-500 border-2 border-yellow-700 ${currentPlayerColor === 'yellow' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('yellow', i)}></div>)}
                     </div>
                 </div>
                  <div className="absolute bottom-2 right-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
-                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-blue-500">
+                    <div className="w-full h-full bg-background/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-blue-500">
                         {players[2].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-blue-500 border-2 border-blue-700 ${currentPlayerColor === 'blue' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('blue', i)}></div>)}
                     </div>
                 </div>
                 <div className="absolute bottom-2 left-2 w-[calc(40%-0.5rem)] h-[calc(40%-0.5rem)]">
-                    <div className="w-full h-full bg-white/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-red-500">
+                    <div className="w-full h-full bg-background/80 backdrop-blur-sm rounded-lg grid grid-cols-2 grid-rows-2 gap-2 p-3 border-2 border-red-500">
                          {players[3].pieces.map((p, i) => p === -1 && <div key={i} className={`rounded-full shadow-inner cursor-pointer bg-red-500 border-2 border-red-700 ${currentPlayerColor === 'red' ? 'ring-2 ring-offset-2 ring-black' : ''}`} onClick={() => onPieceClick('red', i)}></div>)}
                     </div>
                 </div>
@@ -335,7 +335,7 @@ export default function LudoGame() {
                             <Button onClick={rollDice} disabled={(diceValue !== null && !diceRolling) || !!winner} className="w-40 h-12 text-lg">
                                 <Dices className="mr-2 h-6 w-6" /> {winner ? 'Game Over' : (diceRolling ? 'Rolling...' : 'Roll Dice')}
                             </Button>
-                            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-white w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
+                            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-muted text-muted-foreground w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
                         </div>
                         {winner ? (
                             <p className={cn("font-semibold text-xl text-center", playerColors[winner].text)}>🎉 {message} 🎉</p>
