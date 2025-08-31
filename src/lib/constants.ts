@@ -89,6 +89,18 @@ export const truths: string[] = [
   'What is your go-to karaoke song?',
   "What's the most awkward date you've been on?",
   'If you had to eat one meal for the rest of your life, what would it be?',
+  'What is a secret talent you have?',
+  "What's the weirdest dream you've ever had?",
+  'Have you ever pretended to be sick to get out of something?',
+  "What's the biggest misconception people have about you?",
+  'If you could trade lives with someone for a day, who would it be?',
+  "What's something you're terrible at but wish you were good at?",
+  'What is the most embarrassing song on your phone?',
+  'Have you ever snooped through someone’s phone?',
+  "What's the strangest thing you've ever eaten?",
+  'What fictional character do you have a crush on?',
+  'Have you ever been fired from a job?',
+  'If you could only use one emoji for the rest of your life, which one would it be?',
 ];
 
 export const dares: string[] = [
@@ -110,6 +122,18 @@ export const dares: string[] = [
   'Hold your breath for as long as you can.',
   'Speak only in rhymes for the next 3 minutes.',
   "Do your best impression of a baby being born.",
+  'Let the person to your left do your makeup.',
+  'Serenade the person to your right.',
+  'Try to breakdance for 30 seconds.',
+  'Let the group create a silly hairstyle for you.',
+  'Speak in a high-pitched voice for the rest of the round.',
+  'Do an impression of another player until someone guesses who it is.',
+  'Let someone post a silly status on your social media.',
+  'Try to sell a random object in the room to the group.',
+  'Eat a raw onion slice.',
+  'Do your best catwalk model strut.',
+  'Howl like a wolf at the moon (or ceiling).',
+  'Let the group text a random contact from your phone.',
 ];
 
 export const hangmanWords: string[] = [
@@ -121,16 +145,21 @@ export const hangmanWords: string[] = [
     'algorithm', 'debug', 'deploy', 'framework', 'library', 'package', 'repository',
     'keyboard', 'monitor', 'processor', 'memory', 'storage', 'bandwidth', 'pixel',
     'responsive', 'accessibility', 'usability', 'performance', 'optimization',
+    'galaxy', 'planet', 'comet', 'nebula', 'supernova', 'astronaut', 'universe',
+    'elephant', 'giraffe', 'penguin', 'dolphin', 'kangaroo', 'chimpanzee', 'crocodile',
+    'symphony', 'concerto', 'orchestra', 'melody', 'harmony', 'rhythm', 'opera',
+    'mountain', 'volcano', 'river', 'canyon', 'desert', 'forest', 'waterfall',
+    'history', 'philosophy', 'psychology', 'sociology', 'economics', 'politics', 'literature'
 ];
 
 export const charades = {
-  "Movie": ["Titanic", "Jurassic Park", "The Matrix", "Star Wars", "Pulp Fiction", "Forrest Gump", "The Godfather", "Inception", "The Lion King", "Avatar", "E.T.", "Back to the Future"],
-  "TV Show": ["Friends", "The Office", "Game of Thrones", "Breaking Bad", "Stranger Things", "The Simpsons", "Seinfeld", "Squid Game", "The Crown", "Sherlock"],
-  "Object": ["Telescope", "Guitar", "Microwave", "Stapler", "Slinky", "Yo-yo", "Lawnmower", "Helicopter", "Trampoline", "Blender", "Camera", "Typewriter"],
-  "Animal": ["Monkey", "Elephant", "Penguin", "Kangaroo", "Octopus", "T-Rex", "Giraffe", "Flamingo", "Sloth", "Crab", "Caterpillar", "Peacock"],
-  "Action": ["Typing", "Fishing", "Playing basketball", "Ballet dancing", "Doing laundry", "Shoveling snow", "Riding a rollercoaster", "Scuba diving", "Building a snowman", "Doing magic tricks"],
-  "Person": ["Albert Einstein", "Beyonce", "Michael Jackson", "Harry Potter", "Darth Vader", "Cleopatra", "Charlie Chaplin", "Elvis Presley", "Wonder Woman", "Santa Claus"],
-  "Song": ["Bohemian Rhapsody", "Stayin' Alive", "Single Ladies", "Baby Shark", "YMCA", "Macarena", "Thriller", "I Will Survive", "Uptown Funk", "Let It Go"],
+  "Movie": ["Titanic", "Jurassic Park", "The Matrix", "Star Wars", "Pulp Fiction", "Forrest Gump", "The Godfather", "Inception", "The Lion King", "Avatar", "E.T.", "Back to the Future", "The Avengers", "Finding Nemo", "Shrek", "Harry Potter", "Jaws", "The Wizard of Oz", "Singin' in the Rain", "Psycho"],
+  "TV Show": ["Friends", "The Office", "Game of Thrones", "Breaking Bad", "Stranger Things", "The Simpsons", "Seinfeld", "Squid Game", "The Crown", "Sherlock", "Doctor Who", "The Mandalorian", "Black Mirror", "Westworld", "The Big Bang Theory"],
+  "Object": ["Telescope", "Guitar", "Microwave", "Stapler", "Slinky", "Yo-yo", "Lawnmower", "Helicopter", "Trampoline", "Blender", "Camera", "Typewriter", "Accordion", "Pogo stick", "Unicycle", "Boomerang", "Hourglass", "Compass", "Abacus"],
+  "Animal": ["Monkey", "Elephant", "Penguin", "Kangaroo", "Octopus", "T-Rex", "Giraffe", "Flamingo", "Sloth", "Crab", "Caterpillar", "Peacock", "Chameleon", "Porcupine", "Armadillo", "Hummingbird", "Hedgehog", "Scorpion", "Platypus"],
+  "Action": ["Typing", "Fishing", "Playing basketball", "Ballet dancing", "Doing laundry", "Shoveling snow", "Riding a rollercoaster", "Scuba diving", "Building a snowman", "Doing magic tricks", "Sumo wrestling", "Surfing", "Playing chess", "Milking a cow", "Hula hooping", "Rock climbing"],
+  "Person": ["Albert Einstein", "Beyonce", "Michael Jackson", "Harry Potter", "Darth Vader", "Cleopatra", "Charlie Chaplin", "Elvis Presley", "Wonder Woman", "Santa Claus", "William Shakespeare", "Leonardo da Vinci", "Marilyn Monroe", "Martin Luther King Jr.", "Steve Jobs"],
+  "Song": ["Bohemian Rhapsody", "Stayin' Alive", "Single Ladies", "Baby Shark", "YMCA", "Macarena", "Thriller", "I Will Survive", "Uptown Funk", "Let It Go", "Stairway to Heaven", "Like a Rolling Stone", "Billie Jean", "Smells Like Teen Spirit", "Hey Jude"],
 };
 
 export const sentencePuzzles: SentencePuzzle[] = [
@@ -183,7 +212,32 @@ export const sentencePuzzles: SentencePuzzle[] = [
     puzzleType: "Fill in the Blank",
     puzzleContent: "Actions speak louder than [_].",
     solution: "words",
-  }
+  },
+  {
+    puzzleType: "Riddle",
+    puzzleContent: "What has an eye, but cannot see?",
+    solution: "A needle",
+  },
+  {
+    puzzleType: "Fill in the Blank",
+    puzzleContent: "An apple a day keeps the [_] away.",
+    solution: "doctor",
+  },
+  {
+    puzzleType: "Riddle",
+    puzzleContent: "I’m tall when I’m young, and I’m short when I’m old. What am I?",
+    solution: "A candle",
+  },
+  {
+    puzzleType: "Fill in the Blank",
+    puzzleContent: "When in Rome, do as the [_] do.",
+    solution: "Romans",
+  },
+  {
+    puzzleType: "Riddle",
+    puzzleContent: "What is so fragile that saying its name breaks it?",
+    solution: "Silence",
+  },
 ];
 
 export const emojiPuzzles: EmojiPuzzle[] = [
@@ -205,6 +259,13 @@ export const emojiPuzzles: EmojiPuzzle[] = [
   { emojis: '🧛‍♂️🦇', solution: 'Dracula' },
   { emojis: '👨‍🎨👂', solution: 'Van Gogh' },
   { emojis: '🎂🎉', solution: 'Birthday party' },
+  { emojis: '📖🐛', solution: 'Bookworm' },
+  { emojis: '☀️😎', solution: 'Sunglasses' },
+  { emojis: '🤖👮‍♂️', solution: 'Robocop' },
+  { emojis: '🏃‍♂️💨', solution: 'Fast and Furious' },
+  { emojis: '💻🐭', solution: 'Computer mouse' },
+  { emojis: '💍+💍+💍', solution: 'Lord of the Rings' },
+  { emojis: '👨‍👩‍👧‍👦🌳', solution: 'Family tree' },
 ];
 
 export const triviaQuestions: TriviaQuestion[] = [
@@ -287,6 +348,46 @@ export const triviaQuestions: TriviaQuestion[] = [
     question: "Who invented the telephone?",
     options: ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell", "Guglielmo Marconi"],
     correctAnswer: "Alexander Graham Bell"
+  },
+  {
+    question: "What is the currency of Switzerland?",
+    options: ["Euro", "Dollar", "Franc", "Pound"],
+    correctAnswer: "Franc"
+  },
+  {
+    question: "How many bones are in the human body?",
+    options: ["206", "201", "209", "212"],
+    correctAnswer: "206"
+  },
+  {
+    question: "What is the main ingredient in guacamole?",
+    options: ["Tomato", "Avocado", "Onion", "Lime"],
+    correctAnswer: "Avocado"
+  },
+  {
+    question: "Who was the first person to walk on the moon?",
+    options: ["Buzz Aldrin", "Yuri Gagarin", "Michael Collins", "Neil Armstrong"],
+    correctAnswer: "Neil Armstrong"
+  },
+  {
+    question: "Which artist cut off his own ear?",
+    options: ["Pablo Picasso", "Vincent van Gogh", "Salvador Dalí", "Claude Monet"],
+    correctAnswer: "Vincent van Gogh"
+  },
+  {
+    question: "What is the largest mammal in the world?",
+    options: ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"],
+    correctAnswer: "Blue Whale"
+  },
+  {
+    question: "In which city were the first modern Olympic Games held?",
+    options: ["Paris", "London", "Athens", "Rome"],
+    correctAnswer: "Athens"
+  },
+  {
+    question: "What is the boiling point of water at sea level?",
+    options: ["90°C", "100°C", "110°C", "120°C"],
+    correctAnswer: "100°C"
   }
 ];
 
@@ -306,4 +407,13 @@ export const wouldYouRatherQuestions: WouldYouRatherQuestion[] = [
   { optionA: "Have unlimited free flights", optionB: "Have unlimited free meals at any restaurant" },
   { optionA: "Find true love", optionB: "Win the lottery" },
   { optionA: "End world hunger", optionB: "End all wars" },
+  { optionA: "Have a photographic memory", optionB: "Be able to forget anything you want" },
+  { optionA: "Live where it is always winter", optionB: "Live where it is always summer" },
+  { optionA: "Have the ability to teleport", optionB: "Have the ability of telekinesis" },
+  { optionA: "Be an amazing singer", optionB: "Be an amazing dancer" },
+  { optionA: "Never be stuck in traffic again", optionB: "Never get a cold again" },
+  { optionA: "Be able to breathe underwater", optionB: "Be able to run at 100 mph" },
+  { optionA: "Explore a new planet", optionB: "Explore the deep ocean" },
+  { optionA: "Never have to sleep again", optionB: "Be able to eat whatever you want without gaining weight" },
+  { optionA: "Be the funniest person alive", optionB: "Be the most intelligent person alive" },
 ];
