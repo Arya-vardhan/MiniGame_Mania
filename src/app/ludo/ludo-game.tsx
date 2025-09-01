@@ -324,10 +324,10 @@ export default function LudoGame() {
     }
     
     const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'top-0 left-0 -translate-x-1/2 -translate-y-1/2',
-        yellow: 'top-0 right-0 translate-x-1/2 -translate-y-1/2',
-        blue: 'bottom-0 right-0 translate-x-1/2 translate-y-1/2',
-        red: 'bottom-0 left-0 -translate-x-1/2 translate-y-1/2'
+        green: 'top-0 -left-28',
+        yellow: 'top-0 -right-28',
+        blue: 'bottom-0 -right-28',
+        red: 'bottom-0 -left-28'
     };
 
     return (
@@ -338,7 +338,7 @@ export default function LudoGame() {
                     onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
                     currentPlayerColor={players[currentPlayerIndex].color}
                 />
-                <div className="absolute w-[calc(100%+6rem)] h-[calc(100%+6rem)] -top-12 -left-12 pointer-events-none">
+                <div className="absolute -inset-28 flex items-center justify-center pointer-events-none">
                     <div className={cn(
                         "absolute transform transition-all duration-500 ease-in-out pointer-events-auto",
                         "w-24 h-24 flex items-center justify-center",
