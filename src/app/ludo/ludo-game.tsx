@@ -187,9 +187,16 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
 };
 
 const DiceControl = ({ onRoll, diceValue, disabled, isRolling, currentPlayerColor }: { onRoll: () => void; diceValue: number | null; disabled: boolean; isRolling: boolean; currentPlayerColor: PlayerColor }) => {
+    
+    const positionClasses: Record<PlayerColor, string> = {
+        green: 'lg:absolute lg:top-0 lg:left-0 lg:-translate-x-full lg:p-4',
+        yellow: 'lg:absolute lg:top-0 lg:right-0 lg:translate-x-full lg:p-4',
+        red: 'lg:absolute lg:bottom-0 lg:left-0 lg:-translate-x-full lg:p-4',
+        blue: 'lg:absolute lg:bottom-0 lg:right-0 lg:translate-x-full lg:p-4',
+    };
+
     return (
-        <div className="flex flex-col items-center justify-center gap-4">
-            <p className="font-bold text-lg capitalize">{currentPlayerColor}'s Turn</p>
+        <div className={cn("flex flex-col items-center justify-center gap-4 mt-4 lg:mt-0", positionClasses[currentPlayerColor])}>
             <button
                 onClick={onRoll}
                 disabled={disabled || isRolling}
@@ -326,16 +333,16 @@ export default function LudoGame() {
     }
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 p-4 w-full">
-           <div className="w-[clamp(300px,90vw,500px)] h-[clamp(300px,90vw,500px)] flex-shrink-0">
-                <LudoBoard 
-                    players={players} 
-                    onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
-                    currentPlayerColor={players[currentPlayerIndex].color}
-                />
-           </div>
-            <div className="flex-shrink-0">
-                <DiceControl
+        <div className="flex flex-col items-center justify-center w-full">
+            <div className="relative w-[clamp(300px,90vw,500px)]">
+                <div className="aspect-square">
+                    <LudoBoard 
+                        players={players} 
+                        onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
+                        currentPlayerColor={players[currentPlayerIndex].color}
+                    />
+                </div>
+                 <DiceControl
                     onRoll={rollDice}
                     diceValue={diceValue}
                     isRolling={diceRolling}
@@ -346,3 +353,5 @@ export default function LudoGame() {
         </div>
     );
 }
+
+    
