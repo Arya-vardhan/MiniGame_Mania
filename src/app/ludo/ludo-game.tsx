@@ -13,11 +13,11 @@ type Player = {
   pieces: number[]; // -1 for home, 0-51 for board path, 52-57 for final path, 58 for finished
 };
 
-const playerColors: Record<PlayerColor, { base: string, piece: string, path: string, text: string }> = {
-    green: { base: 'bg-green-200', piece: 'bg-green-500', path: 'bg-green-300', text: 'text-green-400' },
-    yellow: { base: 'bg-yellow-200', piece: 'bg-yellow-500', path: 'bg-yellow-300', text: 'text-yellow-400' },
-    blue: { base: 'bg-blue-200', piece: 'bg-blue-500', path: 'bg-blue-300', text: 'text-blue-400' },
-    red: { base: 'bg-red-200', piece: 'bg-red-500', path: 'bg-red-300', text: 'text-red-400' },
+const playerColors: Record<PlayerColor, { base: string, piece: string, path: string, text: string, border: string }> = {
+    green: { base: 'bg-green-200', piece: 'bg-green-500', path: 'bg-green-300', text: 'text-green-400', border: 'border-green-500' },
+    yellow: { base: 'bg-yellow-200', piece: 'bg-yellow-500', path: 'bg-yellow-300', text: 'text-yellow-400', border: 'border-yellow-500' },
+    blue: { base: 'bg-blue-200', piece: 'bg-blue-500', path: 'bg-blue-300', text: 'text-blue-400', border: 'border-blue-500' },
+    red: { base: 'bg-red-200', piece: 'bg-red-500', path: 'bg-red-300', text: 'text-red-400', border: 'border-red-500' },
 };
 
 
@@ -186,19 +186,21 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     );
 };
 
-const DiceControl = ({ onRoll, diceValue, disabled, isRolling }: { onRoll: () => void; diceValue: number | null; disabled: boolean; isRolling: boolean; }) => {
+const DiceControl = ({ onRoll, diceValue, disabled, isRolling, currentPlayerColor }: { onRoll: () => void; diceValue: number | null; disabled: boolean; isRolling: boolean; currentPlayerColor: PlayerColor }) => {
     return (
         <div className="flex flex-col items-center justify-center gap-4">
+            <p className="font-bold text-lg capitalize">{currentPlayerColor}'s Turn</p>
             <button
                 onClick={onRoll}
                 disabled={disabled || isRolling}
                 className={cn(
-                    "text-6xl font-bold p-4 border-4 rounded-lg bg-background text-foreground w-24 h-24 flex items-center justify-center shadow-inner cursor-pointer transition-transform duration-150 ease-in-out hover:scale-105 active:scale-95",
-                    (disabled || isRolling) && "cursor-not-allowed opacity-50"
+                    "text-6xl font-bold p-4 border-4 rounded-lg bg-background text-foreground w-24 h-24 flex items-center justify-center shadow-inner cursor-pointer transition-all duration-150 ease-in-out hover:scale-105 active:scale-95",
+                    (disabled || isRolling) && "cursor-not-allowed opacity-50",
+                    playerColors[currentPlayerColor].border
                 )}
                 aria-label={isRolling ? "Rolling dice" : `Dice value: ${diceValue || 'none'}. Click to roll.`}
             >
-                {isRolling ? <Dices className="animate-spin h-12 w-12" /> : diceValue}
+                {isRolling ? <Dices className="animate-spin h-12 w-12" /> : (diceValue || <Dices className="h-12 w-12" />)}
             </button>
         </div>
     )
@@ -322,39 +324,25 @@ export default function LudoGame() {
         setCurrentPlayerIndex(newIndex);
         setDiceValue(null);
     }
-    
-    const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'top-0 -left-28',
-        yellow: 'top-0 -right-28',
-        blue: 'bottom-0 -right-28',
-        red: 'bottom-0 -left-28'
-    };
 
     return (
-        <div className="flex flex-col items-center justify-center gap-8 p-4 mt-8 mb-8">
-           <div className="relative w-[clamp(300px,90vw,500px)] h-[clamp(300px,90vw,500px)]">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 p-4 w-full">
+           <div className="w-[clamp(300px,90vw,500px)] h-[clamp(300px,90vw,500px)] flex-shrink-0">
                 <LudoBoard 
                     players={players} 
                     onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
                     currentPlayerColor={players[currentPlayerIndex].color}
                 />
-                <div className="absolute -inset-28 flex items-center justify-center pointer-events-none">
-                    <div className={cn(
-                        "absolute transform transition-all duration-500 ease-in-out pointer-events-auto",
-                        "w-24 h-24 flex items-center justify-center",
-                        dicePositionClasses[currentPlayer.color]
-                    )}>
-                        <DiceControl
-                            onRoll={rollDice}
-                            diceValue={diceValue}
-                            isRolling={diceRolling}
-                            disabled={!!winner || (diceValue !== null && !diceRolling)}
-                        />
-                    </div>
-                </div>
            </div>
+            <div className="flex-shrink-0">
+                <DiceControl
+                    onRoll={rollDice}
+                    diceValue={diceValue}
+                    isRolling={diceRolling}
+                    disabled={!!winner || (diceValue !== null && !diceRolling)}
+                    currentPlayerColor={currentPlayer.color}
+                />
+            </div>
         </div>
     );
 }
-
-    
