@@ -89,7 +89,7 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     }
     
     return (
-        <div className="relative w-[clamp(300px,90vw,500px)] h-[clamp(300px,90vw,500px)] bg-background p-2 border-4 border-muted/30 rounded-lg shadow-lg">
+        <div className="relative w-full h-full bg-background p-2 border-4 border-muted/30 rounded-lg shadow-lg">
             <div className="grid grid-cols-15 grid-rows-15 w-full h-full">
                 {Array.from({length: 15*15}).map((_, index) => {
                     const r = Math.floor(index / 15);
@@ -324,10 +324,10 @@ export default function LudoGame() {
     }
     
     const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'top-0 left-0',
-        yellow: 'top-0 right-0',
-        blue: 'bottom-0 right-0',
-        red: 'bottom-0 left-0'
+        green: 'top-0 left-0 -translate-x-1/2 -translate-y-1/2',
+        yellow: 'top-0 right-0 translate-x-1/2 -translate-y-1/2',
+        blue: 'bottom-0 right-0 translate-x-1/2 translate-y-1/2',
+        red: 'bottom-0 left-0 -translate-x-1/2 translate-y-1/2'
     };
 
     return (
@@ -338,19 +338,20 @@ export default function LudoGame() {
                     onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
                     currentPlayerColor={players[currentPlayerIndex].color}
                 />
-                <div className={cn(
-                    "absolute transform transition-all duration-500 ease-in-out",
-                    "md:w-32 md:h-32 flex items-center justify-center", // Larger clickable area on desktop
-                    "w-24 h-24", // Default size for mobile
-                    dicePositionClasses[currentPlayer.color]
-                )}>
-                    <DiceControl
-                        onRoll={rollDice}
-                        diceValue={diceValue}
-                        isRolling={diceRolling}
-                        disabled={!!winner || (diceValue !== null && !diceRolling)}
-                    />
-                 </div>
+                <div className="absolute w-[calc(100%+6rem)] h-[calc(100%+6rem)] -top-12 -left-12 pointer-events-none">
+                    <div className={cn(
+                        "absolute transform transition-all duration-500 ease-in-out pointer-events-auto",
+                        "w-24 h-24 flex items-center justify-center",
+                        dicePositionClasses[currentPlayer.color]
+                    )}>
+                        <DiceControl
+                            onRoll={rollDice}
+                            diceValue={diceValue}
+                            isRolling={diceRolling}
+                            disabled={!!winner || (diceValue !== null && !diceRolling)}
+                        />
+                    </div>
+                </div>
            </div>
         </div>
     );
