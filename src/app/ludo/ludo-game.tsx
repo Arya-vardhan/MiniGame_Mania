@@ -324,15 +324,15 @@ export default function LudoGame() {
     }
     
     const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'lg:top-0 lg:left-0 lg:-translate-x-[110%] lg:-translate-y-[10%]',
-        yellow: 'lg:top-0 lg:right-0 lg:translate-x-[110%] lg:-translate-y-[10%]',
-        blue: 'lg:bottom-0 lg:right-0 lg:translate-x-[110%] lg:translate-y-[10%]',
-        red: 'lg:bottom-0 lg:left-0 lg:-translate-x-[110%] lg:translate-y-[10%]'
+        green: 'top-0 left-0',
+        yellow: 'top-0 right-0',
+        blue: 'bottom-0 right-0',
+        red: 'bottom-0 left-0'
     };
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 mt-8 mb-8">
-           <div className="relative">
+        <div className="flex flex-col items-center justify-center gap-8 p-4 mt-8 mb-8">
+           <div className="relative w-[clamp(300px,90vw,500px)] h-[clamp(300px,90vw,500px)]">
                 <LudoBoard 
                     players={players} 
                     onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
@@ -340,8 +340,8 @@ export default function LudoGame() {
                 />
                 <div className={cn(
                     "absolute transform transition-all duration-500 ease-in-out",
-                    "left-1/2 -bottom-32 -translate-x-1/2",
-                    "lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto",
+                    "md:w-32 md:h-32 flex items-center justify-center", // Larger clickable area on desktop
+                    "w-24 h-24", // Default size for mobile
                     dicePositionClasses[currentPlayer.color]
                 )}>
                     <DiceControl
@@ -355,3 +355,5 @@ export default function LudoGame() {
         </div>
     );
 }
+
+    
