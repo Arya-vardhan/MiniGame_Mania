@@ -189,10 +189,17 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
 const DiceControl = ({ onRoll, diceValue, disabled, isRolling }: { onRoll: () => void; diceValue: number | null; disabled: boolean; isRolling: boolean; }) => {
     return (
         <div className="flex flex-col items-center justify-center gap-4">
-            <Button onClick={onRoll} disabled={disabled || isRolling} className="w-40 h-12 text-lg">
-                <Dices className="mr-2 h-6 w-6" /> {isRolling ? 'Rolling...' : 'Roll Dice'}
-            </Button>
-            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-background text-foreground w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
+            <button
+                onClick={onRoll}
+                disabled={disabled || isRolling}
+                className={cn(
+                    "text-6xl font-bold p-4 border-4 rounded-lg bg-background text-foreground w-24 h-24 flex items-center justify-center shadow-inner cursor-pointer transition-transform duration-150 ease-in-out hover:scale-105 active:scale-95",
+                    (disabled || isRolling) && "cursor-not-allowed opacity-50"
+                )}
+                aria-label={isRolling ? "Rolling dice" : `Dice value: ${diceValue || 'none'}. Click to roll.`}
+            >
+                {isRolling ? <Dices className="animate-spin h-12 w-12" /> : diceValue}
+            </button>
         </div>
     )
 }
@@ -242,12 +249,11 @@ export default function LudoGame() {
              const pieceIndex = currentPlayer.pieces.findIndex(p => p === movablePieces[0]);
              setTimeout(() => movePiece(currentPlayer.color, pieceIndex, roll), 500);
         } else if (movablePieces.length === 0 && !canMoveFromHome) {
-            setMessage(`Rolled ${roll}, no possible moves.`);
              setTimeout(() => {
                 nextTurn();
             }, 1500);
         } else {
-             setMessage(`Rolled a ${roll}. Select a piece.`);
+             // Player needs to select a piece
         }
     };
 
@@ -260,21 +266,17 @@ export default function LudoGame() {
         let newPlayers = JSON.parse(JSON.stringify(players));
         let player = newPlayers.find((p: Player) => p.color === color)!;
         let piecePos = player.pieces[pieceIndex];
-        let messageForUser = "";
 
         if (piecePos === -1) { // Move from home
             if (moveValue === 6) {
                 player.pieces[pieceIndex] = 1; // Start position
-                messageForUser = `Moved out! Roll again.`;
                 setDiceValue(null); 
             } else {
-                setMessage('You need a 6 to move a piece from home.');
                 return;
             }
         } else { // Move on board
             const newPos = piecePos + moveValue;
             if (newPos > 58) {
-                setMessage('This piece cannot move that far. Try another piece.');
                 return;
             }
             player.pieces[pieceIndex] = newPos;
@@ -300,10 +302,8 @@ export default function LudoGame() {
             }
             
             if(newPos === 58) {
-                 messageForUser = `Piece is home! Roll again.`
                  setDiceValue(null);
             } else if (moveValue === 6) {
-                messageForUser = `Got a 6! Roll again.`
                 setDiceValue(null);
             } else {
                 nextTurn();
@@ -311,12 +311,10 @@ export default function LudoGame() {
         }
         
         setPlayers(newPlayers);
-        setMessage(messageForUser || `Player ${players[currentPlayerIndex].color}'s turn.`);
 
 
         if(player.pieces.every((p: number) => p === 58)) {
             setWinner(player.color);
-            setMessage(`Player ${player.color} wins!`);
         }
     }
 
@@ -324,17 +322,8 @@ export default function LudoGame() {
         const newIndex = (currentPlayerIndex + 1) % players.length;
         setCurrentPlayerIndex(newIndex);
         setDiceValue(null);
-        setMessage(`It's ${players[newIndex].color}'s turn.`);
     }
-
-    const resetGame = () => {
-        setPlayers(initialPlayers);
-        setCurrentPlayerIndex(0);
-        setDiceValue(null);
-        setWinner(null);
-        setMessage("Player Green to start!");
-    }
-
+    
     const dicePositionClasses: Record<PlayerColor, string> = {
         green: 'lg:top-1/2 lg:-left-80 lg:-translate-y-1/2',
         yellow: 'lg:left-1/2 lg:-top-56 lg:-translate-x-1/2',
