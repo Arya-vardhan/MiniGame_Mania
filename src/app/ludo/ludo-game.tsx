@@ -311,12 +311,12 @@ export default function LudoGame() {
         }
         
         setPlayers(newPlayers);
-        setMessage(messageForUser || `Player ${currentPlayerIndex + 1}'s turn.`);
+        setMessage(messageForUser || `Player ${players[currentPlayerIndex].color}'s turn.`);
 
 
         if(player.pieces.every((p: number) => p === 58)) {
             setWinner(player.color);
-            setMessage(`Player ${currentPlayerIndex + 1} (${player.color}) wins!`);
+            setMessage(`Player ${player.color} wins!`);
         }
     }
 
@@ -324,7 +324,7 @@ export default function LudoGame() {
         const newIndex = (currentPlayerIndex + 1) % players.length;
         setCurrentPlayerIndex(newIndex);
         setDiceValue(null);
-        setMessage(`Player ${newIndex + 1}'s turn.`);
+        setMessage(`It's ${players[newIndex].color}'s turn.`);
     }
 
     const resetGame = () => {
@@ -332,37 +332,15 @@ export default function LudoGame() {
         setCurrentPlayerIndex(0);
         setDiceValue(null);
         setWinner(null);
-        setMessage("Player 1 (Green) to start!");
-    }
-    
-    const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'top-1/2 -left-80 -translate-y-1/2',
-        yellow: 'top-1/2 -right-80 -translate-y-1/2',
-        blue: 'left-1/2 -bottom-40 -translate-x-1/2',
-        red: 'left-1/2 -top-40 -translate-x-1/2'
-    };
-    
-    const responsiveDicePositionClasses: Record<PlayerColor, string> = {
-        green: 'lg:top-1/2 lg:-left-80 lg:-translate-y-1/2 bottom-[-10rem] left-1/2 -translate-x-1/2',
-        yellow: 'lg:top-1/2 lg:-right-80 lg:-translate-y-1/2 top-[-10rem] left-1/2 -translate-x-1/2',
-        blue: 'lg:left-1/2 lg:-bottom-40 lg:-translate-x-1/2 top-[-10rem] left-1/2 -translate-x-1/2',
-        red: 'lg:left-1/2 lg:-top-40 lg:-translate-x-1/2 bottom-[-10rem] left-1/2 -translate-x-1/2',
-    };
-    
-    const getDicePosition = () => {
-        if(window.innerWidth < 1024) {
-            // Simplified vertical layout for mobile
-            switch(currentPlayer.color) {
-                case 'green': return 'left-1/2 -bottom-40 -translate-x-1/2';
-                case 'yellow': return 'left-1/2 -top-40 -translate-x-1/2';
-                case 'blue': return 'left-1/2 -top-40 -translate-x-1/2';
-                case 'red': return 'left-1/2 -bottom-40 -translate-x-1/2';
-                default: return '';
-            }
-        }
-        return dicePositionClasses[currentPlayer.color];
+        setMessage("Player Green to start!");
     }
 
+    const dicePositionClasses: Record<PlayerColor, string> = {
+        green: 'lg:top-1/2 lg:-left-80 lg:-translate-y-1/2',
+        yellow: 'lg:left-1/2 lg:-top-40 lg:-translate-x-1/2',
+        blue: 'lg:top-1/2 lg:-right-80 lg:-translate-y-1/2',
+        red: 'lg:left-1/2 lg:-bottom-40 lg:-translate-x-1/2'
+    };
 
     return (
         <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-24 mb-24 lg:mt-0 lg:mb-0">
@@ -374,7 +352,8 @@ export default function LudoGame() {
                 />
                  <div className={cn(
                     "absolute transform transition-all duration-500 ease-in-out",
-                    window.innerWidth >= 1024 ? dicePositionClasses[currentPlayer.color] : (currentPlayer.color === 'yellow' || currentPlayer.color === 'blue' ? 'left-1/2 -top-40 -translate-x-1/2' : 'left-1/2 -bottom-40 -translate-x-1/2')
+                    "left-1/2 -bottom-40 -translate-x-1/2 lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto lg:translate-x-0 lg:translate-y-0",
+                    dicePositionClasses[currentPlayer.color]
                  )}>
                     <DiceControl
                         onRoll={rollDice}
@@ -406,5 +385,3 @@ export default function LudoGame() {
         </div>
     );
 }
-
-    
