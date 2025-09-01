@@ -214,7 +214,6 @@ export default function LudoGame() {
     const [players, setPlayers] = useState<Player[]>(initialPlayers);
     const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
     const [diceValue, setDiceValue] = useState<number | null>(null);
-    const [message, setMessage] = useState("Player 1 (Green) to start!");
     const [winner, setWinner] = useState<PlayerColor | null>(null);
     const [diceRolling, setDiceRolling] = useState(false);
     
@@ -325,14 +324,14 @@ export default function LudoGame() {
     }
     
     const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'lg:top-1/2 lg:-left-80 lg:-translate-y-1/2',
-        yellow: 'lg:left-1/2 lg:-top-56 lg:-translate-x-1/2',
-        blue: 'lg:top-1/2 lg:-right-80 lg:-translate-y-1/2',
-        red: 'lg:left-1/2 lg:-bottom-56 lg:-translate-x-1/2'
+        green: 'top-0 left-0 -translate-x-[110%] -translate-y-[10%]',
+        yellow: 'top-0 right-0 translate-x-[110%] -translate-y-[10%]',
+        blue: 'bottom-0 right-0 translate-x-[110%] translate-y-[10%]',
+        red: 'bottom-0 left-0 -translate-x-[110%] translate-y-[10%]'
     };
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-48 mb-48 lg:mt-0 lg:mb-0">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-8 mb-8">
            <div className="relative">
                 <LudoBoard 
                     players={players} 
@@ -341,7 +340,7 @@ export default function LudoGame() {
                 />
                 <div className={cn(
                     "absolute transform transition-all duration-500 ease-in-out",
-                    "left-1/2 -bottom-56 -translate-x-1/2 lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto lg:translate-x-0 lg:translate-y-0",
+                    "left-1/2 -bottom-56 -translate-x-1/2 lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto",
                     dicePositionClasses[currentPlayer.color]
                 )}>
                     <DiceControl
@@ -355,5 +354,3 @@ export default function LudoGame() {
         </div>
     );
 }
-
-    
