@@ -89,7 +89,7 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     }
     
     return (
-        <div className="relative w-[500px] h-[500px] bg-background p-2 border-4 border-muted/30 rounded-lg shadow-lg">
+        <div className="relative w-[clamp(300px,90vw,500px)] h-[clamp(300px,90vw,500px)] bg-background p-2 border-4 border-muted/30 rounded-lg shadow-lg">
             <div className="grid grid-cols-15 grid-rows-15 w-full h-full">
                 {Array.from({length: 15*15}).map((_, index) => {
                     const r = Math.floor(index / 15);
@@ -324,14 +324,14 @@ export default function LudoGame() {
     }
     
     const dicePositionClasses: Record<PlayerColor, string> = {
-        green: 'top-0 left-0 -translate-x-[110%] -translate-y-[10%]',
-        yellow: 'top-0 right-0 translate-x-[110%] -translate-y-[10%]',
-        blue: 'bottom-0 right-0 translate-x-[110%] translate-y-[10%]',
-        red: 'bottom-0 left-0 -translate-x-[110%] translate-y-[10%]'
+        green: 'lg:top-0 lg:left-0 lg:-translate-x-[110%] lg:-translate-y-[10%]',
+        yellow: 'lg:top-0 lg:right-0 lg:translate-x-[110%] lg:-translate-y-[10%]',
+        blue: 'lg:bottom-0 lg:right-0 lg:translate-x-[110%] lg:translate-y-[10%]',
+        red: 'lg:bottom-0 lg:left-0 lg:-translate-x-[110%] lg:translate-y-[10%]'
     };
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-8 mb-8">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 mt-8 mb-8">
            <div className="relative">
                 <LudoBoard 
                     players={players} 
@@ -340,7 +340,8 @@ export default function LudoGame() {
                 />
                 <div className={cn(
                     "absolute transform transition-all duration-500 ease-in-out",
-                    "left-1/2 -bottom-56 -translate-x-1/2 lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto",
+                    "left-1/2 -bottom-32 -translate-x-1/2",
+                    "lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto",
                     dicePositionClasses[currentPlayer.color]
                 )}>
                     <DiceControl
