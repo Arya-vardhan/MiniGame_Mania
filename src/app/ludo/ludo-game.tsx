@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -185,6 +186,16 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     );
 };
 
+const DiceControl = ({ onRoll, diceValue, disabled, isRolling }: { onRoll: () => void; diceValue: number | null; disabled: boolean; isRolling: boolean; }) => {
+    return (
+        <div className="flex items-center justify-center gap-4">
+            <Button onClick={onRoll} disabled={disabled || isRolling} className="w-40 h-12 text-lg">
+                <Dices className="mr-2 h-6 w-6" /> {isRolling ? 'Rolling...' : 'Roll Dice'}
+            </Button>
+            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-muted text-foreground w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
+        </div>
+    )
+}
 
 export default function LudoGame() {
     const initialPlayers: Player[] = [
@@ -199,6 +210,8 @@ export default function LudoGame() {
     const [message, setMessage] = useState("Player 1 (Green) to start!");
     const [winner, setWinner] = useState<PlayerColor | null>(null);
     const [diceRolling, setDiceRolling] = useState(false);
+    
+    const currentPlayer = players[currentPlayerIndex];
 
     const rollDice = () => {
         if(winner || diceValue || diceRolling) return;
@@ -229,12 +242,12 @@ export default function LudoGame() {
              const pieceIndex = currentPlayer.pieces.findIndex(p => p === movablePieces[0]);
              setTimeout(() => movePiece(currentPlayer.color, pieceIndex, roll), 500);
         } else if (movablePieces.length === 0 && !canMoveFromHome) {
-            setMessage(`Player ${currentPlayerIndex + 1} rolled ${roll} but cannot move.`);
+            setMessage(`Rolled ${roll}, no possible moves.`);
              setTimeout(() => {
                 nextTurn();
             }, 1500);
         } else {
-            setMessage(`Player ${currentPlayerIndex + 1} (${currentPlayer.color}) rolled a ${roll}. Select a piece.`);
+             setMessage(`Rolled a ${roll}. Select a piece.`);
         }
     };
 
@@ -252,7 +265,7 @@ export default function LudoGame() {
         if (piecePos === -1) { // Move from home
             if (moveValue === 6) {
                 player.pieces[pieceIndex] = 1; // Start position
-                messageForUser = `Player ${currentPlayerIndex + 1} moved a piece out! Roll again.`;
+                messageForUser = `Moved out! Roll again.`;
                 setDiceValue(null); 
             } else {
                 setMessage('You need a 6 to move a piece from home.');
@@ -287,10 +300,10 @@ export default function LudoGame() {
             }
             
             if(newPos === 58) {
-                 messageForUser = `Player ${currentPlayerIndex + 1} got a piece home! Roll again.`
+                 messageForUser = `Piece is home! Roll again.`
                  setDiceValue(null);
             } else if (moveValue === 6) {
-                messageForUser = `Player ${currentPlayerIndex + 1} got a 6! Roll again.`
+                messageForUser = `Got a 6! Roll again.`
                 setDiceValue(null);
             } else {
                 nextTurn();
@@ -298,7 +311,7 @@ export default function LudoGame() {
         }
         
         setPlayers(newPlayers);
-        if(messageForUser) setMessage(messageForUser);
+        setMessage(messageForUser || `Player ${currentPlayerIndex + 1}'s turn.`);
 
 
         if(player.pieces.every((p: number) => p === 58)) {
@@ -311,7 +324,7 @@ export default function LudoGame() {
         const newIndex = (currentPlayerIndex + 1) % players.length;
         setCurrentPlayerIndex(newIndex);
         setDiceValue(null);
-        setMessage(`Player ${newIndex + 1} (${players[newIndex].color})'s turn.`);
+        setMessage(`Player ${newIndex + 1}'s turn.`);
     }
 
     const resetGame = () => {
@@ -321,36 +334,77 @@ export default function LudoGame() {
         setWinner(null);
         setMessage("Player 1 (Green) to start!");
     }
+    
+    const dicePositionClasses: Record<PlayerColor, string> = {
+        green: 'top-1/2 -left-80 -translate-y-1/2',
+        yellow: 'top-1/2 -right-80 -translate-y-1/2',
+        blue: 'left-1/2 -bottom-40 -translate-x-1/2',
+        red: 'left-1/2 -top-40 -translate-x-1/2'
+    };
+    
+    const responsiveDicePositionClasses: Record<PlayerColor, string> = {
+        green: 'lg:top-1/2 lg:-left-80 lg:-translate-y-1/2 bottom-[-10rem] left-1/2 -translate-x-1/2',
+        yellow: 'lg:top-1/2 lg:-right-80 lg:-translate-y-1/2 top-[-10rem] left-1/2 -translate-x-1/2',
+        blue: 'lg:left-1/2 lg:-bottom-40 lg:-translate-x-1/2 top-[-10rem] left-1/2 -translate-x-1/2',
+        red: 'lg:left-1/2 lg:-top-40 lg:-translate-x-1/2 bottom-[-10rem] left-1/2 -translate-x-1/2',
+    };
+    
+    const getDicePosition = () => {
+        if(window.innerWidth < 1024) {
+            // Simplified vertical layout for mobile
+            switch(currentPlayer.color) {
+                case 'green': return 'left-1/2 -bottom-40 -translate-x-1/2';
+                case 'yellow': return 'left-1/2 -top-40 -translate-x-1/2';
+                case 'blue': return 'left-1/2 -top-40 -translate-x-1/2';
+                case 'red': return 'left-1/2 -bottom-40 -translate-x-1/2';
+                default: return '';
+            }
+        }
+        return dicePositionClasses[currentPlayer.color];
+    }
 
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl">
-            <LudoBoard players={players} onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} currentPlayerColor={players[currentPlayerIndex].color}/>
-            <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-24 mb-24 lg:mt-0 lg:mb-0">
+           <div className="relative">
+                <LudoBoard 
+                    players={players} 
+                    onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
+                    currentPlayerColor={players[currentPlayerIndex].color}
+                />
+                 <div className={cn(
+                    "absolute transform transition-all duration-500 ease-in-out",
+                    window.innerWidth >= 1024 ? dicePositionClasses[currentPlayer.color] : (currentPlayer.color === 'yellow' || currentPlayer.color === 'blue' ? 'left-1/2 -top-40 -translate-x-1/2' : 'left-1/2 -bottom-40 -translate-x-1/2')
+                 )}>
+                    <DiceControl
+                        onRoll={rollDice}
+                        diceValue={diceValue}
+                        isRolling={diceRolling}
+                        disabled={!!winner || (diceValue !== null && !diceRolling)}
+                    />
+                 </div>
+           </div>
+
+            <div className="flex flex-col items-center gap-6 lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2">
                 <Card className="w-full max-w-sm">
                     <CardHeader>
                         <CardTitle className="text-center text-3xl font-bold">Ludo</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col items-center gap-4">
-                        <div className="flex items-center justify-center gap-4">
-                            <Button onClick={rollDice} disabled={(diceValue !== null && !diceRolling) || !!winner} className="w-40 h-12 text-lg">
-                                <Dices className="mr-2 h-6 w-6" /> {winner ? 'Game Over' : (diceRolling ? 'Rolling...' : 'Roll Dice')}
-                            </Button>
-                            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-muted text-muted-foreground w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
-                        </div>
-                        {winner ? (
-                            <p className={cn("font-semibold text-xl text-center", playerColors[winner].text)}>🎉 {message} 🎉</p>
+                         {winner ? (
+                            <p className={cn("font-semibold text-xl text-center h-12", playerColors[winner].text)}>🎉 {message} 🎉</p>
                         ) : (
                             <p className={cn("font-semibold text-lg h-12 text-center", playerColors[players[currentPlayerIndex].color].text)}>{message}</p>
                         )}
+                        <Button onClick={resetGame} variant="default" size="lg" className="mt-4">
+                            <RotateCcw className="mr-2 h-5 w-5" />
+                            Reset Game
+                        </Button>
                     </CardContent>
                 </Card>
-                
-                <Button onClick={resetGame} variant="default" size="lg" className="mt-4">
-                    <RotateCcw className="mr-2 h-5 w-5" />
-                    Reset Game
-                </Button>
             </div>
         </div>
     );
 }
+
+    
