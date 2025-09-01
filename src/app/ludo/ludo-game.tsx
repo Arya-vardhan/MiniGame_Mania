@@ -89,7 +89,7 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
     }
     
     return (
-        <div className="relative w-[500px] h-[500px] bg-muted/20 p-2 border-4 border-muted/30 rounded-lg shadow-lg">
+        <div className="relative w-[500px] h-[500px] bg-background p-2 border-4 border-muted/30 rounded-lg shadow-lg">
             <div className="grid grid-cols-15 grid-rows-15 w-full h-full">
                 {Array.from({length: 15*15}).map((_, index) => {
                     const r = Math.floor(index / 15);
@@ -188,11 +188,11 @@ const LudoBoard = ({ players, onPieceClick, currentPlayerColor }: { players: Pla
 
 const DiceControl = ({ onRoll, diceValue, disabled, isRolling }: { onRoll: () => void; diceValue: number | null; disabled: boolean; isRolling: boolean; }) => {
     return (
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4">
             <Button onClick={onRoll} disabled={disabled || isRolling} className="w-40 h-12 text-lg">
                 <Dices className="mr-2 h-6 w-6" /> {isRolling ? 'Rolling...' : 'Roll Dice'}
             </Button>
-            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-muted text-foreground w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
+            <div className="text-6xl font-bold p-4 border-4 rounded-lg bg-background text-foreground w-24 h-24 flex items-center justify-center shadow-inner">{diceValue}</div>
         </div>
     )
 }
@@ -337,24 +337,24 @@ export default function LudoGame() {
 
     const dicePositionClasses: Record<PlayerColor, string> = {
         green: 'lg:top-1/2 lg:-left-80 lg:-translate-y-1/2',
-        yellow: 'lg:left-1/2 lg:-top-40 lg:-translate-x-1/2',
+        yellow: 'lg:left-1/2 lg:-top-56 lg:-translate-x-1/2',
         blue: 'lg:top-1/2 lg:-right-80 lg:-translate-y-1/2',
-        red: 'lg:left-1/2 lg:-bottom-40 lg:-translate-x-1/2'
+        red: 'lg:left-1/2 lg:-bottom-56 lg:-translate-x-1/2'
     };
 
     return (
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-24 mb-24 lg:mt-0 lg:mb-0">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-8 p-4 bg-background rounded-xl mt-48 mb-48 lg:mt-0 lg:mb-0">
            <div className="relative">
                 <LudoBoard 
                     players={players} 
                     onPieceClick={(color, pieceIndex) => movePiece(color, pieceIndex)} 
                     currentPlayerColor={players[currentPlayerIndex].color}
                 />
-                 <div className={cn(
+                <div className={cn(
                     "absolute transform transition-all duration-500 ease-in-out",
-                    "left-1/2 -bottom-40 -translate-x-1/2 lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto lg:translate-x-0 lg:translate-y-0",
+                    "left-1/2 -bottom-56 -translate-x-1/2 lg:bottom-auto lg:top-auto lg:left-auto lg:right-auto lg:translate-x-0 lg:translate-y-0",
                     dicePositionClasses[currentPlayer.color]
-                 )}>
+                )}>
                     <DiceControl
                         onRoll={rollDice}
                         diceValue={diceValue}
@@ -363,25 +363,8 @@ export default function LudoGame() {
                     />
                  </div>
            </div>
-
-            <div className="flex flex-col items-center gap-6 lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2">
-                <Card className="w-full max-w-sm">
-                    <CardHeader>
-                        <CardTitle className="text-center text-3xl font-bold">Ludo</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex flex-col items-center gap-4">
-                         {winner ? (
-                            <p className={cn("font-semibold text-xl text-center h-12", playerColors[winner].text)}>🎉 {message} 🎉</p>
-                        ) : (
-                            <p className={cn("font-semibold text-lg h-12 text-center", playerColors[players[currentPlayerIndex].color].text)}>{message}</p>
-                        )}
-                        <Button onClick={resetGame} variant="default" size="lg" className="mt-4">
-                            <RotateCcw className="mr-2 h-5 w-5" />
-                            Reset Game
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
         </div>
     );
 }
+
+    
