@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import * as LucideIcons from 'lucide-react';
 
 const icons = [
-    'Cat', 'Dog', 'Bird', 'Fish', 'Mouse', 'Beetle', 'Turtle', 'Viper',
+    'Cat', 'Dog', 'Bird', 'Fish', 'Mouse', 'Squirrel', 'Turtle', 'Rabbit',
     'Apple', 'Banana', 'Carrot', 'Pizza', 'Sun', 'Moon', 'Star', 'Cloud'
 ] as const;
 
@@ -52,7 +52,6 @@ const GameCard = ({ card, onClick }: { card: MemoryCard, onClick: (id: number) =
                     "w-1/2 h-1/2",
                     card.isMatched ? "text-green-500" : "text-foreground"
                 )} />}
-                <span className="text-xs mt-1 text-muted-foreground">{card.icon}</span>
             </div>
         </div>
     );
