@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -56,10 +57,15 @@ const GameCard = ({ card, onClick }: { card: MemoryCard, onClick: (id: number) =
 };
 
 export default function MemoryMatchGame() {
-    const [cards, setCards] = useState<MemoryCard[]>(generateCards());
+    const [cards, setCards] = useState<MemoryCard[]>([]);
     const [flippedCards, setFlippedCards] = useState<number[]>([]);
     const [turns, setTurns] = useState(0);
     const [isChecking, setIsChecking] = useState(false);
+    
+    useEffect(() => {
+      // Generate cards on the client side to avoid hydration errors
+      setCards(generateCards());
+    }, []);
 
     useEffect(() => {
         if (flippedCards.length === 2) {
@@ -105,7 +111,7 @@ export default function MemoryMatchGame() {
         setIsChecking(false);
     };
     
-    const isGameWon = cards.every(card => card.isMatched);
+    const isGameWon = cards.length > 0 && cards.every(card => card.isMatched);
 
     return (
         <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
