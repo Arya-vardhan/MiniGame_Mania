@@ -466,9 +466,3 @@ export const neverHaveIEverQuestions: NeverHaveIEverQuestion[] = [
   "lost a bet and had to do something embarrassing.",
   "pretended to laugh at a joke I didn't get.",
 ];
-
-export const memoryGameIcons = [
-  'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit', 'Hamster', 'Turtle', 'Snake',
-  'Apple', 'Banana', 'Carrot', 'Broccoli', 'Pizza', 'Burger', 'IceCream', 'Cake',
-  'Sun', 'Moon', 'Star', 'Cloud', 'Heart', 'Smile', 'Music', 'Film'
-];
