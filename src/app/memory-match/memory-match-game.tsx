@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import * as LucideIcons from 'lucide-react';
 
 const icons = [
-    'Cat', 'Dog', 'Bird', 'Fish', 'Mouse', 'Ant', 'Turtle', 'Snake',
+    'Cat', 'Dog', 'Bird', 'Fish', 'Mouse', 'Beetle', 'Turtle', 'Viper',
     'Apple', 'Banana', 'Carrot', 'Pizza', 'Sun', 'Moon', 'Star', 'Cloud'
 ] as const;
 
