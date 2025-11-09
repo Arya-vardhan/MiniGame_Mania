@@ -47,11 +47,12 @@ const GameCard = ({ card, onClick }: { card: MemoryCard, onClick: (id: number) =
             <div className="absolute w-full h-full bg-primary rounded-lg flex items-center justify-center [backface-visibility:hidden]">
                 <LucideIcons.Brain className="w-1/2 h-1/2 text-primary-foreground" />
             </div>
-            <div className="absolute w-full h-full bg-card border rounded-lg flex items-center justify-center [transform:rotateY(180deg)] [backface-visibility:hidden]">
+            <div className="absolute w-full h-full bg-card border rounded-lg flex flex-col items-center justify-center p-2 [transform:rotateY(180deg)] [backface-visibility:hidden]">
                 {IconComponent && <IconComponent className={cn(
                     "w-1/2 h-1/2",
                     card.isMatched ? "text-green-500" : "text-foreground"
                 )} />}
+                <span className="text-xs mt-1 text-muted-foreground">{card.icon}</span>
             </div>
         </div>
     );
