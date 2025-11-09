@@ -52,6 +52,7 @@ const GameCard = ({ card, onClick }: { card: MemoryCard, onClick: (id: number) =
                     "w-1/2 h-1/2",
                     card.isMatched ? "text-green-500" : "text-foreground"
                 )} />}
+                <span className="text-xs mt-1">{card.icon}</span>
             </div>
         </div>
     );
