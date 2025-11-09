@@ -1,12 +1,12 @@
 import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion, WouldYouRatherQuestion, NeverHaveIEverQuestion } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows, HelpCircle } from 'lucide-react';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows, HelpCircle, Brain } from 'lucide-react';
 
 export const games: Game[] = [
   {
-    title: 'Ludo',
-    description: 'A classic strategy board game for up to four players.',
-    href: '/ludo',
-    icon: Swords,
+    title: 'Memory Match',
+    description: 'Flip cards to find matching pairs. Test your memory!',
+    href: '/memory-match',
+    icon: Brain,
   },
   {
     title: 'Sentence Puzzles',
@@ -465,4 +465,10 @@ export const neverHaveIEverQuestions: NeverHaveIEverQuestion[] = [
   "tried to cut my pet's hair.",
   "lost a bet and had to do something embarrassing.",
   "pretended to laugh at a joke I didn't get.",
+];
+
+export const memoryGameIcons = [
+  'Cat', 'Dog', 'Bird', 'Fish', 'Rabbit', 'Hamster', 'Turtle', 'Snake',
+  'Apple', 'Banana', 'Carrot', 'Broccoli', 'Pizza', 'Burger', 'IceCream', 'Cake',
+  'Sun', 'Moon', 'Star', 'Cloud', 'Heart', 'Smile', 'Music', 'Film'
 ];
