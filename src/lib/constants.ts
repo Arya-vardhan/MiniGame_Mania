@@ -177,6 +177,7 @@ export const charades = {
 export const dumbCharades = {
   "Hollywood Movies": ["The Dark Knight", "Forrest Gump", "The Shawshank Redemption", "Gladiator", "Finding Nemo", "Toy Story", "The Silence of the Lambs", "Braveheart", "Die Hard", "Home Alone"],
   "Bollywood Movies": ["Dilwale Dulhania Le Jayenge", "3 Idiots", "Lagaan", "Sholay", "Dangal", "Gangs of Wasseypur", "Kabhi Khushi Kabhie Gham", "My Name Is Khan", "Queen", "Barfi!"],
+  "Tollywood Movies": ["Baahubali: The Beginning", "RRR", "Eega", "Magadheera", "Arjun Reddy"],
   "Famous Personalities": ["Mahatma Gandhi", "Nelson Mandela", "Queen Elizabeth II", "Donald Trump", "Sachin Tendulkar", "Amitabh Bachchan", "Shah Rukh Khan", "Tom Cruise", "Oprah Winfrey", "Mother Teresa"],
   "Common Objects": ["Ceiling Fan", "Pressure Cooker", "Washing Machine", "Traffic Light", "Vending Machine", "Key", "Wallet", "Spectacles", "Backpack", "Headphones"],
   "Actions / Verbs": ["Crying", "Laughing", "Fighting", "Sleeping", "Eating", "Driving", "Swimming", "Reading", "Writing", "Singing"],
