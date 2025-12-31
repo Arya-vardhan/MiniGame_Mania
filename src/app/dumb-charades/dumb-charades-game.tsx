@@ -36,7 +36,7 @@ export default function DumbCharadesGame() {
     }
   }, [state.charade, gameState]);
 
-  const handleNextWord = (wasGuessed: boolean) => {
+  const handleNextWord = useCallback((wasGuessed: boolean) => {
     // In a real multi-team game, you'd track scores here.
     // For now, we just get a new word.
     startTransition(() => {
@@ -44,13 +44,30 @@ export default function DumbCharadesGame() {
       formData.append('category', category);
       formAction(formData);
     });
-  }
+  }, [category, formAction]);
 
   const handleEndGame = () => {
     setGameState('setup');
     // Reset state for a new game
     setInitialState({ message: '', charade: null, error: null });
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (gameState === 'playing' && event.key === 'Enter') {
+        // Prevent default form submission if any
+        event.preventDefault();
+        // Treat Enter as skipping to the next word
+        handleNextWord(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [gameState, handleNextWord]);
 
   if (gameState === 'setup') {
     return (
