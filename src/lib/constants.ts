@@ -40,12 +40,6 @@ export const games: Game[] = [
     icon: ALargeSmall,
   },
   {
-    title: 'Charades',
-    description: 'Act out words and phrases for your friends to guess.',
-    href: '/charades',
-    icon: Theater,
-  },
-  {
     title: 'Dumb Charades',
     description: 'A classic team-based acting game with various categories.',
     href: '/dumb-charades',
@@ -164,16 +158,6 @@ export const hangmanWords: string[] = [
     'mountain', 'volcano', 'river', 'canyon', 'desert', 'forest', 'waterfall',
     'history', 'philosophy', 'psychology', 'sociology', 'economics', 'politics', 'literature'
 ];
-
-export const charades = {
-  "Movie": ["Titanic", "Jurassic Park", "The Matrix", "Star Wars", "Pulp Fiction", "Forrest Gump", "The Godfather", "Inception", "The Lion King", "Avatar", "E.T.", "Back to the Future", "The Avengers", "Finding Nemo", "Shrek", "Harry Potter", "Jaws", "The Wizard of Oz", "Singin' in the Rain", "Psycho"],
-  "TV Show": ["Friends", "The Office", "Game of Thrones", "Breaking Bad", "Stranger Things", "The Simpsons", "Seinfeld", "Squid Game", "The Crown", "Sherlock", "Doctor Who", "The Mandalorian", "Black Mirror", "Westworld", "The Big Bang Theory"],
-  "Object": ["Telescope", "Guitar", "Microwave", "Stapler", "Slinky", "Yo-yo", "Lawnmower", "Helicopter", "Trampoline", "Blender", "Camera", "Typewriter", "Accordion", "Pogo stick", "Unicycle", "Boomerang", "Hourglass", "Compass", "Abacus"],
-  "Animal": ["Monkey", "Elephant", "Penguin", "Kangaroo", "Octopus", "T-Rex", "Giraffe", "Flamingo", "Sloth", "Crab", "Caterpillar", "Peacock", "Chameleon", "Porcupine", "Armadillo", "Hummingbird", "Hedgehog", "Scorpion", "Platypus"],
-  "Action": ["Typing", "Fishing", "Playing basketball", "Ballet dancing", "Doing laundry", "Shoveling snow", "Riding a rollercoaster", "Scuba diving", "Building a snowman", "Doing magic tricks", "Sumo wrestling", "Surfing", "Playing chess", "Milking a cow", "Hula hooping", "Rock climbing"],
-  "Person": ["Albert Einstein", "Beyonce", "Michael Jackson", "Harry Potter", "Darth Vader", "Cleopatra", "Charlie Chaplin", "Elvis Presley", "Wonder Woman", "Santa Claus", "William Shakespeare", "Leonardo da Vinci", "Marilyn Monroe", "Martin Luther King Jr.", "Steve Jobs"],
-  "Song": ["Bohemian Rhapsody", "Stayin' Alive", "Single Ladies", "Baby Shark", "YMCA", "Macarena", "Thriller", "I Will Survive", "Uptown Funk", "Let It Go", "Stairway to Heaven", "Like a Rolling Stone", "Billie Jean", "Smells Like Teen Spirit", "Hey Jude"],
-};
 
 export const dumbCharades = {
   "Hollywood Movies": ["The Dark Knight", "Forrest Gump", "The Shawshank Redemption", "Gladiator", "Finding Nemo", "Toy Story", "The Silence of the Lambs", "Braveheart", "Die Hard", "Home Alone"],
