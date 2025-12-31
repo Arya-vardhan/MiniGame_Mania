@@ -1,5 +1,5 @@
 import type { Game, SentencePuzzle, EmojiPuzzle, TriviaQuestion, WouldYouRatherQuestion, NeverHaveIEverQuestion } from '@/lib/types';
-import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows, HelpCircle, Brain } from 'lucide-react';
+import { LayoutGrid, Puzzle, Hash, Swords, Flame, Trophy, Hand, ALargeSmall, Theater, Smile, BrainCircuit, GitCompareArrows, HelpCircle, Brain, Clapperboard } from 'lucide-react';
 
 export const games: Game[] = [
   {
@@ -43,6 +43,12 @@ export const games: Game[] = [
     description: 'Act out words and phrases for your friends to guess.',
     href: '/charades',
     icon: Theater,
+  },
+  {
+    title: 'Dumb Charades',
+    description: 'A classic team-based acting game with various categories.',
+    href: '/dumb-charades',
+    icon: Clapperboard,
   },
   {
     title: 'Emoji Pictionary',
@@ -166,6 +172,15 @@ export const charades = {
   "Action": ["Typing", "Fishing", "Playing basketball", "Ballet dancing", "Doing laundry", "Shoveling snow", "Riding a rollercoaster", "Scuba diving", "Building a snowman", "Doing magic tricks", "Sumo wrestling", "Surfing", "Playing chess", "Milking a cow", "Hula hooping", "Rock climbing"],
   "Person": ["Albert Einstein", "Beyonce", "Michael Jackson", "Harry Potter", "Darth Vader", "Cleopatra", "Charlie Chaplin", "Elvis Presley", "Wonder Woman", "Santa Claus", "William Shakespeare", "Leonardo da Vinci", "Marilyn Monroe", "Martin Luther King Jr.", "Steve Jobs"],
   "Song": ["Bohemian Rhapsody", "Stayin' Alive", "Single Ladies", "Baby Shark", "YMCA", "Macarena", "Thriller", "I Will Survive", "Uptown Funk", "Let It Go", "Stairway to Heaven", "Like a Rolling Stone", "Billie Jean", "Smells Like Teen Spirit", "Hey Jude"],
+};
+
+export const dumbCharades = {
+  "Hollywood Movies": ["The Dark Knight", "Forrest Gump", "The Shawshank Redemption", "Gladiator", "Finding Nemo", "Toy Story", "The Silence of the Lambs", "Braveheart", "Die Hard", "Home Alone"],
+  "Bollywood Movies": ["Dilwale Dulhania Le Jayenge", "3 Idiots", "Lagaan", "Sholay", "Dangal", "Gangs of Wasseypur", "Kabhi Khushi Kabhie Gham", "My Name Is Khan", "Queen", "Barfi!"],
+  "Famous Personalities": ["Mahatma Gandhi", "Nelson Mandela", "Queen Elizabeth II", "Donald Trump", "Sachin Tendulkar", "Amitabh Bachchan", "Shah Rukh Khan", "Tom Cruise", "Oprah Winfrey", "Mother Teresa"],
+  "Common Objects": ["Ceiling Fan", "Pressure Cooker", "Washing Machine", "Traffic Light", "Vending Machine", "Key", "Wallet", "Spectacles", "Backpack", "Headphones"],
+  "Actions / Verbs": ["Crying", "Laughing", "Fighting", "Sleeping", "Eating", "Driving", "Swimming", "Reading", "Writing", "Singing"],
+  "Idioms and Phrases": ["Bite the bullet", "Break a leg", "Hit the road", "Spill the beans", "Piece of cake", "Once in a blue moon", "A dime a dozen", "Blessing in disguise", "Cry over spilt milk", "Curiosity killed the cat"]
 };
 
 export const sentencePuzzles: SentencePuzzle[] = [
