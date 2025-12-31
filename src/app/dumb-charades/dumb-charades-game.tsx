@@ -25,6 +25,8 @@ function SubmitButton() {
 export default function DumbCharadesGame() {
   const [initialState, setInitialState] = useState<{message: string; charade: {word: string} | null; error: any}>({ message: '', charade: null, error: null });
   const [state, formAction, isGettingNextWord] = useActionState(getDumbCharadeAction, initialState);
+  const [isPending, startTransition] = useTransition();
+
 
   const [category, setCategory] = useState(categories[0]);
   const [gameState, setGameState] = useState<'setup' | 'playing'>('setup');
@@ -50,9 +52,11 @@ export default function DumbCharadesGame() {
 
 
   const fetchNewWord = useCallback(() => {
-    const formData = new FormData();
-    formData.append('category', category);
-    formAction(formData);
+    startTransition(() => {
+      const formData = new FormData();
+      formData.append('category', category);
+      formAction(formData);
+    });
   }, [category, formAction]);
 
   const handleNext = useCallback(() => {
@@ -134,6 +138,7 @@ export default function DumbCharadesGame() {
   }
 
   const currentWord = wordHistory[currentIndex];
+  const isLoading = isGettingNextWord || isPending;
 
   return (
     <Card className="w-full max-w-md text-center">
@@ -143,7 +148,7 @@ export default function DumbCharadesGame() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="p-8 bg-muted rounded-lg min-h-[120px] flex items-center justify-center">
-           {isGettingNextWord && currentIndex === wordHistory.length -1 ? (
+           {isLoading && currentIndex === wordHistory.length -1 ? (
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
            ) : (
              <p className="text-3xl font-bold tracking-wider">{currentWord}</p>
@@ -156,16 +161,16 @@ export default function DumbCharadesGame() {
                 <ArrowLeft className="h-5 w-5"/>
                 <span className="sr-only">Previous</span>
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700 flex-grow" size="lg" onClick={handleNext} disabled={isGettingNextWord}>
+            <Button className="bg-green-600 hover:bg-green-700 flex-grow" size="lg" onClick={handleNext} disabled={isLoading}>
                 <Check className="mr-2"/> Correct / Next
             </Button>
-             <Button variant="outline" size="icon" onClick={handleNext} disabled={isGettingNextWord}>
+             <Button variant="outline" size="icon" onClick={handleNext} disabled={isLoading}>
                 <ArrowRight className="h-5 w-5"/>
                  <span className="sr-only">Next</span>
             </Button>
         </div>
         <div className="grid grid-cols-2 gap-4 w-full">
-            <Button variant="secondary" size="lg" onClick={fetchNewWord} disabled={isGettingNextWord}>
+            <Button variant="secondary" size="lg" onClick={fetchNewWord} disabled={isLoading}>
                 <SkipForward className="mr-2"/> New Word
             </Button>
             <Button onClick={handleEndGame} size="lg" variant="secondary">
