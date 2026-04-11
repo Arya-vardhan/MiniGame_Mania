@@ -23,6 +23,11 @@ function SubmitButton() {
 }
 
 export default function DumbCharadesGame() {
+  const [gameKey, setGameKey] = useState(0);
+  return <DumbCharadesInner key={gameKey} onEndGame={() => setGameKey(k => k + 1)} />;
+}
+
+function DumbCharadesInner({ onEndGame }: { onEndGame: () => void }) {
   const [initialState, setInitialState] = useState<{message: string; charade: {word: string} | null; error: any}>({ message: '', charade: null, error: null });
   const [state, formAction, isGettingNextWord] = useActionState(getDumbCharadeAction, initialState);
   const [isPending, startTransition] = useTransition();
@@ -74,11 +79,7 @@ export default function DumbCharadesGame() {
   };
 
   const handleEndGame = () => {
-    setGameState('setup');
-    setWordHistory([]);
-    setCurrentIndex(-1);
-    // Reset server action state for a new game
-    setInitialState({ message: '', charade: null, error: null });
+    onEndGame();
   }
 
   // Keyboard navigation effect
