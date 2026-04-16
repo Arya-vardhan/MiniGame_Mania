@@ -122,6 +122,18 @@ export default function TruthOrDareGame() {
   const [mode, setMode] = useState<QuestionType>(null);
   const [currentItem, setCurrentItem] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>(truthOrDareCategories[1].id);
+  const [remainingTruths, setRemainingTruths] = useState<number[]>([]);
+  const [remainingDares, setRemainingDares] = useState<number[]>([]);
+
+  useEffect(() => {
+    // Reset the available choices when the category changes
+    if (truths[selectedCategory]) {
+        setRemainingTruths(Array.from({ length: truths[selectedCategory].length }, (_, i) => i));
+    }
+    if (dares[selectedCategory]) {
+        setRemainingDares(Array.from({ length: dares[selectedCategory].length }, (_, i) => i));
+    }
+  }, [selectedCategory]);
 
   const addPlayer = () => {
     if (newPlayerName.trim() && !players.includes(newPlayerName.trim())) {
@@ -149,9 +161,36 @@ export default function TruthOrDareGame() {
 
   const selectChoice = (type: 'truth' | 'dare') => {
     setMode(type);
-    const list = type === 'truth' ? truths[selectedCategory] : dares[selectedCategory];
-    const randomIndex = Math.floor(Math.random() * list.length);
-    setCurrentItem(list[randomIndex]);
+    
+    const isTruth = type === 'truth';
+    const originalList = isTruth ? truths[selectedCategory] : dares[selectedCategory];
+    let currentRemaining = isTruth ? remainingTruths : remainingDares;
+
+    if (!originalList || originalList.length === 0) {
+        setCurrentItem("No questions available for this category.");
+        setStage('result');
+        return;
+    }
+
+    // Refill the pool if we've exhausted all questions
+    if (currentRemaining.length === 0) {
+        currentRemaining = Array.from({ length: originalList.length }, (_, i) => i);
+    }
+
+    // Pick a random index from the remaining pool
+    const randomIndexWithinRemaining = Math.floor(Math.random() * currentRemaining.length);
+    const chosenIndex = currentRemaining[randomIndexWithinRemaining];
+
+    // Remove the chosen index from the remaining pool
+    const updatedRemaining = currentRemaining.filter((_, idx) => idx !== randomIndexWithinRemaining);
+
+    if (isTruth) {
+        setRemainingTruths(updatedRemaining);
+    } else {
+        setRemainingDares(updatedRemaining);
+    }
+
+    setCurrentItem(originalList[chosenIndex]);
     setStage('result');
   };
   

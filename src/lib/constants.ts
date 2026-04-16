@@ -135,16 +135,16 @@ export const truths: Record<string, string[]> = {
     "Have you ever sent a risky text to the wrong person?"
   ],
   intimate: [
-    "What is the most romantic thing someone has ever done for you?",
-    "What are your biggest relationship deal-breakers?",
-    "What's the deepest emotional pain you've ever experienced?",
-    "Have you ever been truly heartbroken?",
-    "What is a secret burden you are currently carrying?",
-    "When was the last time you cried and why?",
-    "Do you believe in soulmates?",
-    "What is something you deeply regret not telling someone?",
-    "What are you most insecure about?",
-    "What is your biggest fear regarding relationships?"
+    "What's the most deeply personal secret you've never told anyone here?",
+    "When did you last feel completely and utterly vulnerable with a partner?",
+    "What is the most intimate and romantic memory you have of us (or a partner)?",
+    "What's a silent struggle or burden you carry everyday that no one knows about?",
+    "When was the last time someone broke your heart, and how did it change you?",
+    "What's the one thing that makes you feel unconditionally loved?",
+    "If we were to date, what is the absolute hardest thing to deal with about you?",
+    "What role does physical intimacy play in your emotional connection to someone?",
+    "What do you most desire from a relationship that you've never been able to get?",
+    "Tell me about a time you realized you were truly in love."
   ]
 };
 
@@ -198,16 +198,16 @@ export const dares: Record<string, string[]> = {
     'Send a flirty text to the 5th contact in your phone.'
   ],
   intimate: [
-    'Stare deeply into the eyes of the person to your left for one full minute without laughing.',
-    'Share a genuine compliment with every person in the room.',
-    'Describe what you love most about your body.',
-    'Hold hands with the person next to you for the next 5 minutes.',
-    'Give the person across from you a genuine forehead kiss.',
-    'Tell the group something you appreciate about the person to your right.',
-    'Whisper a deep secret to the person next to you.',
-    'Embrace the person next to you in a warm hug for 30 seconds.',
-    'Share a personal goal you haven\'t told anyone about.',
-    'Let the person next to you read the last 3 text messages you sent.'
+    "Stare deeply into the eyes of the person to your left for 60 seconds without speaking.",
+    "Give the person of your choice a slow, sensual neck massage for 2 minutes.",
+    "Whisper the most romantic thing you can think of into the ear of the person next to you.",
+    "Hold hands with the person you find most attractive here for the next 3 rounds.",
+    "Share a passionate, 10-second kiss on the cheek with the person across from you.",
+    "Describe the exact moment you felt the strongest romantic pull toward someone in this room.",
+    "Caress the arm and hand of the person to your right while giving them 3 genuine compliments.",
+    "Blindfold yourself and let someone in the group softly trace a letter on your arm; guess the letter.",
+    "Let the person next to you sit on your lap for the next round.",
+    "Demonstrate how you would initiate making a move on someone you're attracted to."
   ]
 };
 
