@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { truths, dares } from '@/lib/constants';
-import { Flame, CheckSquare, UserPlus, Trash2, RotateCcw, Play, UserCircle } from 'lucide-react';
+import { truths, dares, truthOrDareCategories } from '@/lib/constants';
+import { Flame, CheckSquare, UserPlus, Trash2, RotateCcw, Play, UserCircle, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-type GameStage = 'add_players' | 'spin' | 'choose_source' | 'system_choice' | 'result' | 'manual_play';
+type GameStage = 'add_players' | 'choose_category' | 'spin' | 'choose_source' | 'system_choice' | 'result' | 'manual_play';
 type QuestionType = 'truth' | 'dare' | null;
 
 const colors = ["#FFC107", "#FF5722", "#4CAF50", "#2196F3", "#9C27B0", "#E91E63", "#00BCD4", "#FF9800"];
@@ -121,6 +121,7 @@ export default function TruthOrDareGame() {
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
   const [mode, setMode] = useState<QuestionType>(null);
   const [currentItem, setCurrentItem] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>(truthOrDareCategories[1].id);
 
   const addPlayer = () => {
     if (newPlayerName.trim() && !players.includes(newPlayerName.trim())) {
@@ -148,7 +149,7 @@ export default function TruthOrDareGame() {
 
   const selectChoice = (type: 'truth' | 'dare') => {
     setMode(type);
-    const list = type === 'truth' ? truths : dares;
+    const list = type === 'truth' ? truths[selectedCategory] : dares[selectedCategory];
     const randomIndex = Math.floor(Math.random() * list.length);
     setCurrentItem(list[randomIndex]);
     setStage('result');
@@ -211,9 +212,39 @@ export default function TruthOrDareGame() {
                 </div>
             </CardContent>
             <CardFooter className="flex-col gap-3">
-                <Button className="w-full" size="lg" onClick={() => setStage('spin')} disabled={players.length < 2}>
+                <Button className="w-full" size="lg" onClick={() => setStage('choose_category')} disabled={players.length < 2}>
                     <Play className="mr-2 h-5 w-5"/> Start Game
                 </Button>
+            </CardFooter>
+            </>
+        )}
+
+        {stage === 'choose_category' && (
+             <>
+            <CardHeader className="text-center">
+                <CardTitle className="text-3xl flex items-center justify-center gap-2">
+                    <Settings className="w-6 h-6" /> Game Vibe
+                </CardTitle>
+                <CardDescription>Select the category of questions for this session.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-3 py-6">
+                {truthOrDareCategories.map(cat => (
+                    <Button 
+                        key={cat.id} 
+                        variant={selectedCategory === cat.id ? 'default' : 'outline'} 
+                        className="h-16 text-lg justify-start px-6" 
+                        onClick={() => setSelectedCategory(cat.id)}
+                    >
+                        <div className="flex-1 text-left">{cat.label}</div>
+                        {selectedCategory === cat.id && <CheckSquare className="w-5 h-5 ml-2" />}
+                    </Button>
+                ))}
+            </CardContent>
+            <CardFooter className="flex-col gap-4">
+                 <Button className="w-full" size="lg" onClick={() => setStage('spin')}>
+                     Lock it in & Play!
+                 </Button>
+                 <Button variant="ghost" onClick={() => setStage('add_players')}>Back</Button>
             </CardFooter>
             </>
         )}
