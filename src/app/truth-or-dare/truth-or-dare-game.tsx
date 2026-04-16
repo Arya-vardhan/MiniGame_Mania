@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { truths, dares, truthOrDareCategories } from '@/lib/constants';
+import { useLocalStorage } from '@/hooks/use-local-storage';
 import { Flame, CheckSquare, UserPlus, Trash2, RotateCcw, Play, UserCircle, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -115,25 +116,15 @@ const SpinWheel = ({ players, onFinished }: { players: string[], onFinished: (wi
 }
 
 export default function TruthOrDareGame() {
-  const [stage, setStage] = useState<GameStage>('add_players');
-  const [players, setPlayers] = useState<string[]>([]);
+  const [stage, setStage, removeStage] = useLocalStorage<GameStage>('tod_stage', 'add_players');
+  const [players, setPlayers, removePlayers] = useLocalStorage<string[]>('tod_players', []);
   const [newPlayerName, setNewPlayerName] = useState('');
-  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
-  const [mode, setMode] = useState<QuestionType>(null);
-  const [currentItem, setCurrentItem] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>(truthOrDareCategories[1].id);
-  const [remainingTruths, setRemainingTruths] = useState<number[]>([]);
-  const [remainingDares, setRemainingDares] = useState<number[]>([]);
-
-  useEffect(() => {
-    // Reset the available choices when the category changes
-    if (truths[selectedCategory]) {
-        setRemainingTruths(Array.from({ length: truths[selectedCategory].length }, (_, i) => i));
-    }
-    if (dares[selectedCategory]) {
-        setRemainingDares(Array.from({ length: dares[selectedCategory].length }, (_, i) => i));
-    }
-  }, [selectedCategory]);
+  const [selectedPlayer, setSelectedPlayer, removeSelectedPlayer] = useLocalStorage<string | null>('tod_selected_player', null);
+  const [mode, setMode, removeMode] = useLocalStorage<QuestionType>('tod_mode', null);
+  const [currentItem, setCurrentItem, removeCurrentItem] = useLocalStorage<string>('tod_current_item', '');
+  const [selectedCategory, setSelectedCategory, removeSelectedCategory] = useLocalStorage<string>('tod_selected_category', truthOrDareCategories[1].id);
+  const [remainingTruths, setRemainingTruths, removeRemainingTruths] = useLocalStorage<number[]>('tod_remaining_truths', []);
+  const [remainingDares, setRemainingDares, removeRemainingDares] = useLocalStorage<number[]>('tod_remaining_dares', []);
 
   const addPlayer = () => {
     if (newPlayerName.trim() && !players.includes(newPlayerName.trim())) {
@@ -201,12 +192,15 @@ export default function TruthOrDareGame() {
   };
   
   const resetGame = () => {
-    setPlayers([]);
+    removePlayers();
     setNewPlayerName('');
-    setMode(null);
-    setCurrentItem('');
-    setSelectedPlayer(null);
-    setStage('add_players');
+    removeMode();
+    removeCurrentItem();
+    removeSelectedPlayer();
+    removeSelectedCategory();
+    removeRemainingTruths();
+    removeRemainingDares();
+    removeStage();
   }
 
   return (
@@ -272,7 +266,15 @@ export default function TruthOrDareGame() {
                         key={cat.id} 
                         variant={selectedCategory === cat.id ? 'default' : 'outline'} 
                         className="h-16 text-lg justify-start px-6" 
-                        onClick={() => setSelectedCategory(cat.id)}
+                        onClick={() => {
+                            setSelectedCategory(cat.id);
+                            if (truths[cat.id]) {
+                                setRemainingTruths(Array.from({ length: truths[cat.id].length }, (_, i) => i));
+                            }
+                            if (dares[cat.id]) {
+                                setRemainingDares(Array.from({ length: dares[cat.id].length }, (_, i) => i));
+                            }
+                        }}
                     >
                         <div className="flex-1 text-left">{cat.label}</div>
                         {selectedCategory === cat.id && <CheckSquare className="w-5 h-5 ml-2" />}
