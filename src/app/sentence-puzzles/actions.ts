@@ -2,7 +2,7 @@
 
 import { sentencePuzzles } from "@/lib/constants";
 
-export async function getPuzzleAction() {
+export async function getPuzzleAction(prevState: any) {
   try {
     const puzzle = sentencePuzzles[Math.floor(Math.random() * sentencePuzzles.length)];
     return {

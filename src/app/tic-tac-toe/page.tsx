@@ -8,11 +8,15 @@ export const metadata: Metadata = {
 
 export default function TicTacToePage() {
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Tic Tac Toe</h1>
-        <p className="text-muted-foreground">
-          The classic game of X's and O's.
+    <div className="flex flex-col gap-10 items-center py-6">
+      <div className="text-center space-y-3">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white text-glow-dynamic"
+          style={{ ['--glow-rgb' as any]: '14, 165, 233' }}
+        >
+          Tic Tac Toe
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base max-w-xl leading-relaxed">
+          The classic game of X's and O's. Play against a friend locally!
         </p>
       </div>
       <TicTacToeGame />

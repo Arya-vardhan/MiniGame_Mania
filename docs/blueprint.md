@@ -3,11 +3,9 @@
 ## Core Features:
 
 - Game Selection: Allow users to select from a list of available mini-games.
-- Ludo Game: Implement a playable Ludo game.
 - Sentence Puzzles: Offer sentence puzzle games, that could involve filling in the blanks or unscrambling words. Leverage a tool to select an age-appropriate puzzle for the user to play.
 - Tic Tac Toe: Implement a playable Tic Tac Toe game.
 - Truth or Dare: Presents a game of Truth or Dare.
-- Leaderboard: Keep track of scores and display a leaderboard for each game.
 - User Profiles: Allow users to create profiles to save progress and preferences (saved in local storage).
 
 ## Style Guidelines:

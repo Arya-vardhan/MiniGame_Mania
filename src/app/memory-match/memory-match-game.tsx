@@ -39,20 +39,22 @@ const GameCard = ({ card, onClick }: { card: MemoryCard, onClick: (id: number) =
     return (
         <div
             className={cn(
-                "aspect-square rounded-lg flex items-center justify-center cursor-pointer transition-transform duration-500 [transform-style:preserve-3d]",
+                "aspect-square rounded-xl flex items-center justify-center cursor-pointer transition-transform duration-500 [transform-style:preserve-3d]",
                 card.isFlipped ? '[transform:rotateY(180deg)]' : ''
             )}
             onClick={() => !card.isFlipped && !card.isMatched && onClick(card.id)}
         >
-            <div className="absolute w-full h-full bg-primary rounded-lg flex items-center justify-center [backface-visibility:hidden]">
-                <LucideIcons.Brain className="w-1/2 h-1/2 text-primary-foreground" />
+            <div className="absolute w-full h-full bg-primary/20 border border-primary/30 rounded-xl flex items-center justify-center [backface-visibility:hidden]">
+                <LucideIcons.Brain className="w-1/2 h-1/2 text-primary" />
             </div>
-            <div className="absolute w-full h-full bg-card border rounded-lg flex flex-col items-center justify-center p-2 [transform:rotateY(180deg)] [backface-visibility:hidden]">
+            <div className="absolute w-full h-full bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center p-2 [transform:rotateY(180deg)] [backface-visibility:hidden]">
                 {IconComponent && <IconComponent className={cn(
                     "w-1/2 h-1/2",
-                    card.isMatched ? "text-green-500" : "text-foreground"
-                )} />}
-                <span className="text-xs mt-1">{card.icon}</span>
+                    card.isMatched ? "text-green-500 text-glow-dynamic" : "text-white"
+                )} 
+                style={card.isMatched ? { ['--glow-rgb' as any]: '34, 197, 94' } : {}}
+                />}
+                <span className="text-[10px] sm:text-xs mt-1 text-white/70">{card.icon}</span>
             </div>
         </div>
     );
@@ -117,19 +119,19 @@ export default function MemoryMatchGame() {
 
     return (
         <div className="flex flex-col items-center gap-6 w-full max-w-2xl">
-            <Card className="p-4 w-full">
+            <Card className="glassmorphic border-white/10 p-5 rounded-2xl w-full">
                 <CardContent className="p-0">
-                    <div className="flex justify-between items-center mb-4">
-                        <p className="text-xl font-semibold">Turns: {turns}</p>
-                        <Button onClick={resetGame}>
-                            <RotateCcw className="mr-2 h-4 w-4" />
+                    <div className="flex justify-between items-center mb-6">
+                        <p className="text-lg font-bold text-white/95">Turns: {turns}</p>
+                        <Button onClick={resetGame} variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 rounded-xl text-xs h-9">
+                            <RotateCcw className="mr-1.5 h-3.5 w-3.5 text-muted-foreground" />
                             Reset Game
                         </Button>
                     </div>
                     {isGameWon ? (
-                        <div className="text-center p-8 bg-green-100 dark:bg-green-900/50 rounded-lg">
-                            <h2 className="text-3xl font-bold text-green-600 dark:text-green-400">You Won!</h2>
-                            <p className="text-lg mt-2">You completed the game in {turns} turns.</p>
+                        <div className="text-center p-8 bg-green-500/10 border border-green-500/20 rounded-xl">
+                            <h2 className="text-3xl font-extrabold text-green-400">You Won!</h2>
+                            <p className="text-sm text-muted-foreground mt-2">You completed the game in {turns} turns.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4 [perspective:1000px]">

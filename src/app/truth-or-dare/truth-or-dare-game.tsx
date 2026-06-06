@@ -205,12 +205,12 @@ export default function TruthOrDareGame() {
 
   return (
     <div className="w-full flex justify-center">
-      <Card className="w-full max-w-2xl overflow-hidden">
+      <Card className="glassmorphic border-white/10 w-full max-w-2xl overflow-hidden rounded-2xl mx-auto shadow-2xl">
         {stage === 'add_players' && (
             <>
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl">Setup Players</CardTitle>
-                <CardDescription>Add at least 2 friends to start the game.</CardDescription>
+                <CardTitle className="text-3xl text-white">Setup Players</CardTitle>
+                <CardDescription className="text-white/60">Add at least 2 friends to start the game.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="flex gap-2">
@@ -222,30 +222,31 @@ export default function TruthOrDareGame() {
                             value={newPlayerName} 
                             onChange={(e) => setNewPlayerName(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && addPlayer()}
+                            className="bg-white/5 border-white/10 text-white rounded-xl focus-visible:ring-primary/50 placeholder:text-muted-foreground/50 h-10"
                         />
                     </div>
-                    <Button onClick={addPlayer} variant="secondary">
-                        <UserPlus className="mr-2 h-4 w-4"/> Add
+                    <Button onClick={addPlayer} variant="secondary" className="bg-white/10 hover:bg-white/20 text-white rounded-xl h-10 border border-white/5">
+                        <UserPlus className="mr-2 h-4 w-4 text-muted-foreground"/> Add
                     </Button>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {players.map(player => (
-                        <div key={player} className="flex items-center justify-between bg-muted/40 px-3 py-2 rounded-lg border">
-                            <span className="truncate font-medium">{player}</span>
-                            <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-destructive" onClick={() => removePlayer(player)}>
+                        <div key={player} className="flex items-center justify-between bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                            <span className="truncate font-medium text-white/90">{player}</span>
+                            <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-red-400 hover:bg-white/5" onClick={() => removePlayer(player)}>
                                 <Trash2 className="h-4 w-4"/>
                             </Button>
                         </div>
                     ))}
                     {players.length === 0 && (
-                        <div className="col-span-full py-8 text-center text-muted-foreground italic">
+                        <div className="col-span-full py-8 text-center text-muted-foreground/50 italic">
                             No players added yet.
                         </div>
                     )}
                 </div>
             </CardContent>
-            <CardFooter className="flex-col gap-3">
-                <Button className="w-full" size="lg" onClick={() => setStage('choose_category')} disabled={players.length < 2}>
+            <CardFooter className="flex-col gap-3 pb-6">
+                <Button className="w-full bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20 h-11" size="lg" onClick={() => setStage('choose_category')} disabled={players.length < 2}>
                     <Play className="mr-2 h-5 w-5"/> Start Game
                 </Button>
             </CardFooter>
@@ -255,17 +256,22 @@ export default function TruthOrDareGame() {
         {stage === 'choose_category' && (
              <>
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl flex items-center justify-center gap-2">
-                    <Settings className="w-6 h-6" /> Game Vibe
+                <CardTitle className="text-3xl flex items-center justify-center gap-2 text-white">
+                    <Settings className="w-6 h-6 text-primary" /> Game Vibe
                 </CardTitle>
-                <CardDescription>Select the category of questions for this session.</CardDescription>
+                <CardDescription className="text-white/60">Select the category of questions for this session.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 py-6">
                 {truthOrDareCategories.map(cat => (
                     <Button 
                         key={cat.id} 
-                        variant={selectedCategory === cat.id ? 'default' : 'outline'} 
-                        className="h-16 text-lg justify-start px-6" 
+                        variant="ghost"
+                        className={cn(
+                            "h-16 text-base justify-between px-6 rounded-xl border transition-all duration-300",
+                            selectedCategory === cat.id 
+                              ? "bg-primary text-white border-primary shadow-lg shadow-primary/20" 
+                              : "border-white/10 bg-white/5 text-white/90 hover:bg-white/10 hover:border-primary/40"
+                        )}
                         onClick={() => {
                             setSelectedCategory(cat.id);
                             if (truths[cat.id]) {
@@ -276,16 +282,16 @@ export default function TruthOrDareGame() {
                             }
                         }}
                     >
-                        <div className="flex-1 text-left">{cat.label}</div>
-                        {selectedCategory === cat.id && <CheckSquare className="w-5 h-5 ml-2" />}
+                        <div className="flex-1 text-left font-semibold">{cat.label}</div>
+                        {selectedCategory === cat.id && <CheckSquare className="w-5 h-5 ml-2 text-white" />}
                     </Button>
                 ))}
             </CardContent>
-            <CardFooter className="flex-col gap-4">
-                 <Button className="w-full" size="lg" onClick={() => setStage('spin')}>
+            <CardFooter className="flex-col gap-3 pb-6">
+                 <Button className="w-full bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20 h-11" size="lg" onClick={() => setStage('spin')}>
                      Lock it in & Play!
                  </Button>
-                 <Button variant="ghost" onClick={() => setStage('add_players')}>Back</Button>
+                 <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={() => setStage('add_players')}>Back</Button>
             </CardFooter>
             </>
         )}
@@ -293,17 +299,17 @@ export default function TruthOrDareGame() {
         {stage === 'spin' && (
              <>
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl flex items-center justify-center gap-2">
+                <CardTitle className="text-3xl flex items-center justify-center gap-2 text-white">
                     Spin the Bottle!
                 </CardTitle>
-                <CardDescription>Who's going to be the lucky one?</CardDescription>
+                <CardDescription className="text-white/60">Who's going to be the lucky one?</CardDescription>
             </CardHeader>
             <CardContent className="py-10">
                 <SpinWheel players={players} onFinished={handleSpinFinish} />
             </CardContent>
-            <CardFooter className="justify-center gap-4">
-                 <Button variant="outline" onClick={() => setStage('add_players')}>Edit Players</Button>
-                 <Button variant="ghost" onClick={resetGame} className="text-muted-foreground">Reset All</Button>
+            <CardFooter className="justify-center gap-3 pb-6">
+                  <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={() => setStage('add_players')}>Edit Players</Button>
+                  <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={resetGame}>Reset All</Button>
             </CardFooter>
             </>
         )}
@@ -312,22 +318,22 @@ export default function TruthOrDareGame() {
             <>
             <CardHeader className="text-center">
                 <div className="flex justify-center mb-4">
-                    <UserCircle className="w-20 h-20 text-primary" />
+                    <UserCircle className="w-20 h-20 text-primary text-glow-dynamic" style={{ ['--glow-rgb' as any]: '14, 165, 233' }} />
                 </div>
-                <CardTitle className="text-4xl text-primary">{selectedPlayer}</CardTitle>
-                <CardDescription className="text-lg">It's your turn! How do you want to play?</CardDescription>
+                <CardTitle className="text-4xl text-glow-dynamic text-white" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>{selectedPlayer}</CardTitle>
+                <CardDescription className="text-white/60 text-base mt-1">It's your turn! How do you want to play?</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 py-6">
-                <Button size="lg" className="h-20 text-xl font-bold" onClick={() => selectSource('system')}>
+                <Button size="lg" className="bg-primary hover:bg-primary/85 text-white h-20 text-lg font-bold rounded-2xl shadow-lg shadow-primary/20 transition-all" onClick={() => selectSource('system')}>
                     Use System Questions
                 </Button>
-                <Button size="lg" variant="outline" className="h-20 text-xl font-bold border-2" onClick={() => selectSource('manual')}>
+                <Button size="lg" variant="outline" className="bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/30 text-white h-20 text-lg font-bold rounded-2xl transition-all border" onClick={() => selectSource('manual')}>
                     We have our own question
                 </Button>
             </CardContent>
-            <CardFooter className="justify-center">
-                <Button variant="ghost" onClick={backToWheel}>
-                    <RotateCcw className="mr-2 h-4 w-4"/> Respin
+            <CardFooter className="justify-center pb-6">
+                <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={backToWheel}>
+                    <RotateCcw className="mr-1.5 h-4 w-4 text-muted-foreground"/> Respin
                 </Button>
             </CardFooter>
             </>
@@ -336,30 +342,30 @@ export default function TruthOrDareGame() {
         {stage === 'system_choice' && (
             <>
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl">System Question</CardTitle>
-                <CardDescription>{selectedPlayer}, pick your poison...</CardDescription>
+                <CardTitle className="text-3xl text-white">System Question</CardTitle>
+                <CardDescription className="text-white/60">{selectedPlayer}, pick your poison...</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-2 gap-6 py-10">
                 <Button 
                     size="lg" 
                     variant="outline" 
-                    className="h-32 text-2xl flex flex-col gap-2 border-primary/50 text-primary hover:bg-primary/5" 
+                    className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-sky-500/40 hover:shadow-[0_0_20px_rgba(14,165,233,0.15)] h-32 text-xl flex flex-col gap-2 rounded-2xl border transition-all"
                     onClick={() => selectChoice('truth')}
                 >
-                    <CheckSquare className="h-8 w-8" />
+                    <CheckSquare className="h-8 w-8 text-sky-400" />
                     Truth
                 </Button>
                 <Button 
                     size="lg" 
-                    className="h-32 text-2xl flex flex-col gap-2 bg-accent hover:bg-accent/90" 
+                    className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-sky-400/40 hover:shadow-[0_0_20px_rgba(56,189,248,0.15)] h-32 text-xl flex flex-col gap-2 rounded-2xl border transition-all" 
                     onClick={() => selectChoice('dare')}
                 >
-                    <Flame className="h-8 w-8" />
+                    <Flame className="h-8 w-8 text-sky-300" />
                     Dare
                 </Button>
             </CardContent>
-            <CardFooter className="justify-center">
-                <Button variant="ghost" onClick={backToWheel}>Back to Wheel</Button>
+            <CardFooter className="justify-center pb-6">
+                <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={backToWheel}>Back to Wheel</Button>
             </CardFooter>
             </>
         )}
@@ -367,20 +373,22 @@ export default function TruthOrDareGame() {
         {stage === 'result' && (
             <>
             <CardHeader className="text-center">
-                <CardTitle className="text-2xl capitalize text-primary">{mode} for {selectedPlayer}</CardTitle>
+                <CardTitle className="text-2xl capitalize text-white">
+                  <span className="text-glow-dynamic" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>{mode}</span> for {selectedPlayer}
+                </CardTitle>
             </CardHeader>
             <CardContent className="py-10">
-                <div className="bg-muted/50 p-8 rounded-2xl text-center border shadow-inner min-h-[160px] flex items-center justify-center">
-                    <p className="text-2xl font-medium italic leading-relaxed">
+                <div className="p-8 bg-white/5 border border-white/5 rounded-xl min-h-[150px] flex items-center justify-center">
+                    <p className="text-2xl font-bold italic leading-relaxed text-white text-glow-dynamic" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>
                         "{currentItem}"
                     </p>
                 </div>
             </CardContent>
-            <CardFooter className="flex-col gap-4">
-                <Button className="w-full" size="lg" onClick={backToWheel}>
+            <CardFooter className="flex-col gap-3 pb-6">
+                <Button className="w-full bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20 h-11" size="lg" onClick={backToWheel}>
                     Done! Next Player
                 </Button>
-                <Button variant="ghost" onClick={() => setStage('system_choice')}>
+                <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={() => setStage('system_choice')}>
                     New Question (Same Player)
                 </Button>
             </CardFooter>
@@ -390,18 +398,18 @@ export default function TruthOrDareGame() {
         {stage === 'manual_play' && (
             <>
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl">Custom Question</CardTitle>
-                <CardDescription>The group asks {selectedPlayer} a question!</CardDescription>
+                <CardTitle className="text-3xl text-white">Custom Question</CardTitle>
+                <CardDescription className="text-white/60">The group asks {selectedPlayer} a question!</CardDescription>
             </CardHeader>
             <CardContent className="py-20 text-center space-y-4">
-                <p className="text-xl font-medium">Wait for the group to decide your fate...</p>
-                <p className="text-muted-foreground italic text-sm">Once the task is finished, click below to move on.</p>
+                <p className="text-xl font-bold text-white/90">Wait for the group to decide your fate...</p>
+                <p className="text-muted-foreground/60 italic text-sm">Once the task is finished, click below to move on.</p>
             </CardContent>
-            <CardFooter className="flex-col gap-4">
-                <Button className="w-full" size="lg" onClick={backToWheel}>
+            <CardFooter className="flex-col gap-3 pb-6">
+                <Button className="w-full bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20 h-11" size="lg" onClick={backToWheel}>
                     Done! Next Player
                 </Button>
-                <Button variant="ghost" onClick={() => setStage('choose_source')}>
+                <Button variant="outline" className="w-full border-white/10 bg-white/5 hover:bg-white/10 text-white rounded-xl" onClick={() => setStage('choose_source')}>
                     Change Mind (Use System)
                 </Button>
             </CardFooter>

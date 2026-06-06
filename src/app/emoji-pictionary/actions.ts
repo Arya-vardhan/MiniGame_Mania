@@ -2,7 +2,7 @@
 
 import { emojiPuzzles } from "@/lib/constants";
 
-export async function getEmojiPuzzleAction() {
+export async function getEmojiPuzzleAction(prevState: any) {
   try {
     const puzzle = emojiPuzzles[Math.floor(Math.random() * emojiPuzzles.length)];
     return {

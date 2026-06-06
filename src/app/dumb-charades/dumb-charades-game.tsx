@@ -50,7 +50,8 @@ function DumbCharadesInner({ onEndGame }: { onEndGame: () => void }) {
   // Effect to add newly fetched words to history
   useEffect(() => {
     if (state.charade && gameState === 'playing' && !wordHistory.includes(state.charade.word)) {
-      setWordHistory(prev => [...prev, state.charade.word]);
+      const word = state.charade.word;
+      setWordHistory(prev => [...prev, word]);
       setCurrentIndex(prev => prev + 1);
     }
   }, [state.charade, gameState, wordHistory]);
@@ -111,26 +112,26 @@ function DumbCharadesInner({ onEndGame }: { onEndGame: () => void }) {
 
   if (gameState === 'setup') {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Setup Your Game</CardTitle>
-          <CardDescription>Choose a category to get started.</CardDescription>
+      <Card className="glassmorphic border-white/10 w-full max-w-md rounded-2xl mx-auto">
+        <CardHeader className="text-center">
+          <CardTitle className="text-white">Setup Your Game</CardTitle>
+          <CardDescription className="text-white/60">Choose a category to get started.</CardDescription>
         </CardHeader>
         <form action={formAction}>
           <CardContent className="space-y-4">
             <Select name="category" value={category} onValueChange={setCategory}>
-              <SelectTrigger>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="glassmorphic border-white/10 text-white">
                 {categories.map(cat => (
-                  <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                  <SelectItem key={cat} value={cat} className="focus:bg-white/10 focus:text-white">{cat}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
             {state.error?.category && <p className="text-sm font-medium text-destructive mt-2">{state.error.category[0]}</p>}
           </CardContent>
-          <CardFooter className="flex-col gap-4">
+          <CardFooter className="flex-col gap-4 pb-6">
             <SubmitButton />
           </CardFooter>
         </form>
@@ -142,31 +143,31 @@ function DumbCharadesInner({ onEndGame }: { onEndGame: () => void }) {
   const isLoading = isGettingNextWord || isPending;
 
   return (
-    <Card className="w-full max-w-md text-center">
+    <Card className="glassmorphic border-white/10 w-full max-w-md text-center rounded-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-primary">{category}</CardTitle>
-        <CardDescription>Time to act it out!</CardDescription>
+        <CardTitle className="text-glow-dynamic text-white" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>{category}</CardTitle>
+        <CardDescription className="text-white/60">Time to act it out!</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="p-8 bg-muted rounded-lg min-h-[120px] flex items-center justify-center">
+        <div className="p-8 bg-white/5 border border-white/5 rounded-xl min-h-[120px] flex items-center justify-center">
            {isLoading && currentIndex === wordHistory.length -1 ? (
               <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
            ) : (
-             <p className="text-3xl font-bold tracking-wider">{currentWord}</p>
+             <p className="text-3xl font-extrabold tracking-wider text-white text-glow-dynamic" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>{currentWord}</p>
            )}
         </div>
       </CardContent>
-      <CardFooter className="flex-col gap-4">
+      <CardFooter className="flex-col gap-4 pb-6">
         <div className="flex justify-center items-center gap-4 w-full">
-            <Button variant="outline" size="icon" onClick={handlePrev} disabled={currentIndex <= 0}>
-                <ArrowLeft className="h-5 w-5"/>
+            <Button variant="outline" size="icon" className="rounded-xl border-white/10 bg-white/5 hover:bg-white/10" onClick={handlePrev} disabled={currentIndex <= 0}>
+                <ArrowLeft className="h-5 w-5 text-muted-foreground"/>
                 <span className="sr-only">Previous</span>
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700 flex-grow" size="lg" onClick={handleNext} disabled={isLoading}>
+            <Button className="bg-green-600 hover:bg-green-600/85 flex-grow rounded-xl text-white shadow-lg shadow-green-600/10" size="lg" onClick={handleNext} disabled={isLoading}>
                 <Check className="mr-2"/> Correct / Next
             </Button>
-             <Button variant="outline" size="icon" onClick={handleNext} disabled={isLoading}>
-                <ArrowRight className="h-5 w-5"/>
+             <Button variant="outline" size="icon" className="rounded-xl border-white/10 bg-white/5 hover:bg-white/10" onClick={handleNext} disabled={isLoading}>
+                <ArrowRight className="h-5 w-5 text-muted-foreground"/>
                  <span className="sr-only">Next</span>
             </Button>
         </div>

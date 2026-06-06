@@ -68,13 +68,18 @@ export const games: Game[] = [
     description: 'A classic party game of "Never Have I Ever".',
     href: '/never-have-i-ever',
     icon: HelpCircle,
+  },
+  {
+    title: 'Chess',
+    description: 'Play standard Chess against a friend locally or test your skills against the computer!',
+    href: '/chess',
+    icon: Swords,
   }
 ];
 
 export const navLinks = [
   { href: '/', label: 'Home', icon: LayoutGrid },
   ...games.map(({ href, title, icon }) => ({ href, label: title, icon })),
-  { href: '/leaderboard', label: 'Leaderboard', icon: Trophy },
 ];
 
 export const truthOrDareCategories = [

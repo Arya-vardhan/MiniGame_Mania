@@ -2,7 +2,7 @@
 
 import { neverHaveIEverQuestions } from "@/lib/constants";
 
-export async function getNeverHaveIEverQuestionAction() {
+export async function getNeverHaveIEverQuestionAction(prevState: any) {
   try {
     const question = neverHaveIEverQuestions[Math.floor(Math.random() * neverHaveIEverQuestions.length)];
     return {

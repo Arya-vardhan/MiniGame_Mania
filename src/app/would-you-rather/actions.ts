@@ -2,7 +2,7 @@
 
 import { wouldYouRatherQuestions } from "@/lib/constants";
 
-export async function getWouldYouRatherQuestionAction() {
+export async function getWouldYouRatherQuestionAction(prevState: any) {
   try {
     const question = wouldYouRatherQuestions[Math.floor(Math.random() * wouldYouRatherQuestions.length)];
     return {

@@ -32,10 +32,11 @@ function calculateWinner(squares: SquareValue[]): SquareValue | null {
 const Square = ({ value, onClick, isWinnerSquare }: { value: SquareValue; onClick: () => void; isWinnerSquare: boolean }) => (
   <button
     className={cn(
-        "flex items-center justify-center text-5xl font-bold border border-border aspect-square transition-colors",
-        isWinnerSquare ? 'bg-primary/20' : 'bg-card hover:bg-accent/20',
-        value === 'X' ? 'text-primary' : 'text-accent'
+        "flex items-center justify-center text-5xl font-bold border border-white/5 aspect-square transition-colors rounded-xl",
+        isWinnerSquare ? 'bg-primary/20 border-primary/40' : 'bg-white/5 hover:bg-white/10',
+        value === 'X' ? 'text-primary text-glow-dynamic' : 'text-sky-400 text-glow-dynamic'
     )}
+    style={{ ['--glow-rgb' as any]: value === 'X' ? '14, 165, 233' : '56, 189, 248' }}
     onClick={onClick}
   >
     {value}
@@ -83,10 +84,10 @@ export default function TicTacToeGame() {
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <h2 className="text-2xl font-semibold">{getStatus()}</h2>
-      <Card className="p-2">
+      <h2 className="text-2xl font-semibold text-white/90">{getStatus()}</h2>
+      <Card className="glassmorphic border-white/10 p-4 rounded-2xl">
         <CardContent className="p-0">
-           <div className="grid grid-cols-3 grid-rows-3 gap-2 w-64 h-64 sm:w-80 sm:h-80">
+           <div className="grid grid-cols-3 grid-rows-3 gap-3 w-64 h-64 sm:w-80 sm:h-80">
             {board.map((square, i) => (
               <Square
                 key={i}
@@ -98,8 +99,8 @@ export default function TicTacToeGame() {
           </div>
         </CardContent>
       </Card>
-      <Button onClick={resetGame}>
-        <RotateCcw className="mr-2 h-4 w-4" />
+      <Button onClick={resetGame} variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 rounded-xl">
+        <RotateCcw className="mr-2 h-4 w-4 text-muted-foreground" />
         Reset Game
       </Button>
     </div>

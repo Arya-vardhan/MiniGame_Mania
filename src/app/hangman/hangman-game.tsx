@@ -73,22 +73,22 @@ export default function HangmanGame() {
 
 
     return (
-        <Card className="w-full max-w-2xl text-center">
+        <Card className="glassmorphic border-white/10 w-full max-w-2xl text-center rounded-2xl">
             <CardHeader>
-                <CardTitle>Hangman</CardTitle>
-                <CardDescription>Guess the word before it's too late!</CardDescription>
+                <CardTitle className="text-3xl text-glow-dynamic text-white" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>Hangman</CardTitle>
+                <CardDescription className="text-white/60">Guess the word before it's too late!</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col items-center gap-8">
-                <svg viewBox="0 0 200 200" className="w-48 h-48 text-foreground">
+            <CardContent className="flex flex-col items-center gap-8 pb-8">
+                <svg viewBox="0 0 200 200" className="w-48 h-48 text-white/90" style={{ filter: 'drop-shadow(0 0 10px rgba(14, 165, 233, 0.2))' }}>
                     {/* Gallows structure */}
                     {HANGMAN_PARTS.slice(0, 4)}
                     {/* Hangman body parts */}
                     {HANGMAN_PARTS.slice(4, 4 + incorrectGuesses)}
                 </svg>
 
-                <div className="flex justify-center gap-2 text-3xl font-bold tracking-widest">
+                <div className="flex justify-center gap-2 text-3xl font-bold tracking-widest text-white">
                     {word.split('').map((letter, index) => (
-                        <span key={index} className="w-10 h-12 flex items-center justify-center border-b-4">
+                        <span key={index} className="w-10 h-12 flex items-center justify-center border-b-4 border-white/20">
                             {guessedLetters.includes(letter) || isGameOver ? letter.toUpperCase() : '_'}
                         </span>
                     ))}
@@ -97,25 +97,26 @@ export default function HangmanGame() {
                 {isGameOver ? (
                     <div className="flex flex-col items-center gap-4">
                          <p className={cn(
-                            "text-2xl font-bold",
-                            gameStatus === 'won' ? 'text-green-600' : 'text-destructive'
-                         )}>
-                           {gameStatus === 'won' ? "You won!" : "You lost! The word was:"}
+                            "text-2xl font-extrabold text-glow-dynamic",
+                            gameStatus === 'won' ? 'text-green-400' : 'text-red-500'
+                         )}
+                         style={{ ['--glow-rgb' as any]: gameStatus === 'won' ? '34, 197, 94' : '239, 68, 68' }}
+                         >
+                           {gameStatus === 'won' ? "You Won!" : "You Lost! The word was:"}
                         </p>
-                        {gameStatus === 'lost' && <p className="text-xl font-mono">{word.toUpperCase()}</p>}
-                        <Button onClick={startNewGame}>
-                            <RotateCcw className="mr-2"/>
+                        {gameStatus === 'lost' && <p className="text-xl font-mono text-white tracking-wider font-bold bg-white/5 border border-white/10 px-4 py-1.5 rounded-xl">{word.toUpperCase()}</p>}
+                        <Button onClick={startNewGame} className="bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20">
+                            <RotateCcw className="mr-2 h-4 w-4"/>
                             Play Again
                         </Button>
                     </div>
                 ) : (
-                    <div className="flex flex-wrap justify-center gap-2">
+                    <div className="flex flex-wrap justify-center gap-2 max-w-md">
                         {ALPHABET.map(letter => (
                             <Button
                                 key={letter}
                                 variant="outline"
-                                size="icon"
-                                className="w-10 h-10 text-lg"
+                                className="w-10 h-10 text-sm border-white/10 bg-white/5 hover:bg-white/10 hover:border-sky-500/40 text-white rounded-xl disabled:opacity-20 transition-all duration-200"
                                 onClick={() => handleGuess(letter)}
                                 disabled={guessedLetters.includes(letter)}
                             >

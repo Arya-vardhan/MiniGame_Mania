@@ -19,34 +19,39 @@ function NextQuestionButton() {
 }
 
 export default function NeverHaveIEverGame() {
-  const [initialState, setInitialState] = useState({ message: '', question: null, error: null });
+  const [initialState, setInitialState] = useState<{
+    message: string;
+    question: string | null;
+    error: any;
+  }>({ message: '', question: null, error: null });
   const [state, formAction] = useActionState(getNeverHaveIEverQuestionAction, initialState);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     // Initially load a question
     startTransition(() => {
-        const formData = new FormData();
-        formAction(formData);
+        formAction();
     });
   }, []);
 
   return (
-    <Card className="w-full max-w-2xl text-center">
+    <Card className="glassmorphic border-white/10 w-full max-w-2xl text-center rounded-2xl">
       <CardHeader>
-        <CardTitle>Never Have I Ever...</CardTitle>
-        <CardDescription>Be honest! Have you done it?</CardDescription>
+        <CardTitle className="text-glow-dynamic text-white" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>Never Have I Ever...</CardTitle>
+        <CardDescription className="text-white/60">Be honest! Have you done it?</CardDescription>
       </CardHeader>
-      <CardContent className="min-h-[150px] flex flex-col items-center justify-center gap-4 p-8 bg-muted rounded-lg">
+      <CardContent className="min-h-[150px] flex flex-col items-center justify-center gap-4 p-8 bg-white/5 rounded-xl border border-white/5 mx-6">
         {!state.question ? (
-          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full bg-white/5" />
         ) : (
-          <p className="text-2xl font-bold tracking-tight text-primary">
+          <p className="text-2xl font-bold tracking-tight text-white text-glow-dynamic"
+            style={{ ['--glow-rgb' as any]: '14, 165, 233' }}
+          >
             ...{state.question}
           </p>
         )}
       </CardContent>
-       <CardFooter className="flex-col gap-4 pt-6">
+       <CardFooter className="flex-col gap-4 pt-6 pb-6">
           <form action={formAction}>
               <NextQuestionButton />
           </form>

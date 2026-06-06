@@ -21,7 +21,11 @@ function NextQuestionButton() {
 }
 
 export default function WouldYouRatherGame() {
-  const [initialState, setInitialState] = useState({ message: '', question: null, error: null });
+  const [initialState, setInitialState] = useState<{
+    message: string;
+    question: { optionA: string; optionB: string } | null;
+    error: any;
+  }>({ message: '', question: null, error: null });
   const [state, formAction] = useActionState(getWouldYouRatherQuestionAction, initialState);
   const [isPending, startTransition] = useTransition();
 
@@ -31,8 +35,7 @@ export default function WouldYouRatherGame() {
   useEffect(() => {
     // Initially load a question
     startTransition(() => {
-        const formData = new FormData();
-        formAction(formData);
+        formAction();
     });
   }, []);
 
@@ -59,24 +62,26 @@ export default function WouldYouRatherGame() {
         onClick={() => handleOptionSelect(option)}
         disabled={!!selectedOption}
         className={cn(
-          "relative w-full p-4 rounded-lg text-lg text-center transition-all duration-300 ease-in-out border-2 overflow-hidden disabled:cursor-not-allowed",
-          isSelected ? "border-primary shadow-lg shadow-primary/20" : "border-muted-foreground/30 hover:border-primary/50",
-          option === 'A' ? "bg-blue-900/20" : "bg-purple-900/20"
+          "relative w-full p-5 rounded-2xl text-base sm:text-lg text-center transition-all duration-300 ease-in-out border overflow-hidden disabled:cursor-not-allowed",
+          isSelected 
+            ? (option === 'A' ? "border-sky-500 bg-sky-500/10 shadow-lg shadow-sky-500/20" : "border-sky-400 bg-sky-400/10 shadow-lg shadow-sky-400/20") 
+            : "border-white/10 hover:bg-white/5",
+          option === 'A' ? "hover:border-sky-500/30" : "hover:border-sky-400/30"
         )}
       >
-        <span className="relative z-10 font-semibold">{text}</span>
+        <span className="relative z-10 font-semibold text-white">{text}</span>
         {selectedOption && (
           <>
             <div
               className={cn(
-                  "absolute top-0 left-0 h-full transition-all duration-500",
-                  option === 'A' ? 'bg-blue-500/30' : 'bg-purple-500/30'
+                  "absolute top-0 left-0 h-full transition-all duration-1000",
+                  option === 'A' ? 'bg-sky-500/25' : 'bg-sky-400/25'
               )}
               style={{ width: `${percentage}%` }}
             />
             <div className="relative z-10 flex items-center justify-center mt-4">
-                <BarChart2 className="w-5 h-5 mr-2" />
-                <span className="text-2xl font-bold">{percentage}%</span>
+                <BarChart2 className="w-5 h-5 mr-2 text-white/80" />
+                <span className="text-2xl font-bold text-white">{percentage}%</span>
             </div>
           </>
         )}
@@ -85,21 +90,21 @@ export default function WouldYouRatherGame() {
   };
 
   return (
-    <Card className="w-full max-w-2xl text-center">
+    <Card className="glassmorphic border-white/10 w-full max-w-2xl text-center rounded-2xl">
       <CardHeader>
-        <CardTitle>...{state.question ? '' : 'Loading...'}</CardTitle>
+        <CardTitle className="text-glow-dynamic text-white" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>Would You Rather...</CardTitle>
       </CardHeader>
       <CardContent className="min-h-[250px] flex flex-col items-center justify-center gap-4">
         {!state.question ? (
           <div className="w-full space-y-4">
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-8 w-20 mx-auto" />
-            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full rounded-2xl bg-white/5" />
+            <span className="text-xl font-bold text-muted-foreground/30">OR</span>
+            <Skeleton className="h-20 w-full rounded-2xl bg-white/5" />
           </div>
         ) : (
           <>
             {renderOption('A')}
-            <span className="text-xl font-bold text-muted-foreground">OR</span>
+            <span className="text-xl font-bold text-muted-foreground/50 select-none">OR</span>
             {renderOption('B')}
           </>
         )}

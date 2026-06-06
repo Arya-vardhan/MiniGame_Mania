@@ -61,26 +61,26 @@ export default function QuizTriviaGame() {
 
     if (gameState === 'loading') {
         return (
-             <Card className="w-full max-w-2xl text-center p-8">
+             <Card className="glassmorphic border-white/10 w-full max-w-2xl text-center p-8 rounded-2xl mx-auto">
                 <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
-                <p className="mt-4 text-muted-foreground">Loading Trivia...</p>
+                <p className="mt-4 text-white/80">Loading Trivia...</p>
             </Card>
         )
     }
 
     if (gameState === 'finished') {
         return (
-             <Card className="w-full max-w-2xl text-center">
-                <CardHeader>
-                    <CardTitle>Quiz Complete!</CardTitle>
-                    <CardDescription>You've reached the end of the trivia.</CardDescription>
+             <Card className="glassmorphic border-white/10 w-full max-w-2xl text-center rounded-2xl mx-auto">
+                <CardHeader className="text-center">
+                    <CardTitle className="text-white">Quiz Complete!</CardTitle>
+                    <CardDescription className="text-white/60">You've reached the end of the trivia.</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <p className="text-4xl font-bold">Your Score: {score} / {questions.length}</p>
+                <CardContent className="pb-6">
+                    <p className="text-4xl font-extrabold text-white text-glow-dynamic" style={{ ['--glow-rgb' as any]: '14, 165, 233' }}>Your Score: {score} / {questions.length}</p>
                 </CardContent>
-                <CardFooter>
-                    <Button onClick={loadQuestions} size="lg">
-                        <RotateCcw className="mr-2"/>
+                <CardFooter className="justify-center pb-6">
+                    <Button onClick={loadQuestions} className="bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20">
+                        <RotateCcw className="mr-2 h-4 w-4"/>
                         Play Again
                     </Button>
                 </CardFooter>
@@ -91,11 +91,11 @@ export default function QuizTriviaGame() {
     const currentQuestion = questions[currentQuestionIndex];
 
     return (
-        <Card className="w-full max-w-2xl">
+        <Card className="glassmorphic border-white/10 w-full max-w-2xl rounded-2xl mx-auto">
             <CardHeader>
-                <Progress value={((currentQuestionIndex + 1) / questions.length) * 100} className="mb-4" />
-                <CardTitle>Question {currentQuestionIndex + 1}</CardTitle>
-                <CardDescription className="text-lg font-semibold pt-2 min-h-[5rem]">{currentQuestion.question}</CardDescription>
+                <Progress value={((currentQuestionIndex + 1) / questions.length) * 100} className="mb-4 bg-white/5 h-2" />
+                <CardTitle className="text-white">Question {currentQuestionIndex + 1}</CardTitle>
+                <CardDescription className="text-lg font-bold text-white pt-2 min-h-[5rem]">{currentQuestion.question}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 {currentQuestion.options.map(option => {
@@ -107,25 +107,25 @@ export default function QuizTriviaGame() {
                             key={option}
                             variant="outline"
                             className={cn(
-                                "w-full justify-start text-left h-auto py-3 text-base",
-                                isAnswered && isCorrect && "bg-green-100 border-green-500 text-green-800 hover:bg-green-200",
-                                isAnswered && isSelected && !isCorrect && "bg-red-100 border-red-500 text-red-800 hover:bg-red-200",
-                                isAnswered && !isSelected && "disabled:opacity-70"
-                            )}
+                                "w-full justify-start text-left h-auto py-3 px-4 text-base border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-primary/40 rounded-xl transition-all duration-200",
+                                isAnswered && isCorrect && "bg-green-500/10 border-green-500/40 text-green-400 hover:bg-green-500/20 hover:text-green-300",
+                                isAnswered && isSelected && !isCorrect && "bg-red-500/10 border-red-500/40 text-red-400 hover:bg-red-500/20 hover:text-red-300",
+                                isAnswered && !isSelected && "opacity-40"
+                             )}
                             onClick={() => handleAnswerSelect(option)}
                             disabled={isAnswered}
                         >
-                            {isAnswered && isSelected && isCorrect && <CheckCircle className="mr-2 text-green-600"/>}
-                            {isAnswered && isSelected && !isCorrect && <XCircle className="mr-2 text-red-600"/>}
-                            {isAnswered && !isSelected && isCorrect && <CheckCircle className="mr-2 text-green-600"/>}
+                            {isAnswered && isSelected && isCorrect && <CheckCircle className="mr-2 text-green-400 h-5 w-5"/>}
+                            {isAnswered && isSelected && !isCorrect && <XCircle className="mr-2 text-red-400 h-5 w-5"/>}
+                            {isAnswered && !isSelected && isCorrect && <CheckCircle className="mr-2 text-green-400 h-5 w-5"/>}
                             {option}
                         </Button>
                     )
                 })}
             </CardContent>
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-end pb-6">
                 {isAnswered && (
-                     <Button onClick={handleNextQuestion} size="lg">
+                     <Button onClick={handleNextQuestion} className="bg-primary hover:bg-primary/85 text-white rounded-xl shadow-lg shadow-primary/20">
                         {currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
                     </Button>
                 )}

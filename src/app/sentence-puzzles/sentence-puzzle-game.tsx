@@ -21,7 +21,11 @@ function SubmitButton() {
 }
 
 export default function SentencePuzzleGame() {
-  const [initialState, setInitialState] = useState({ message: '', puzzle: null, error: null });
+  const [initialState, setInitialState] = useState<{
+    message: string;
+    puzzle: { puzzleType: string; puzzleContent: string; solution: string } | null;
+    error: any;
+  }>({ message: '', puzzle: null, error: null });
   const [state, formAction] = useActionState(getPuzzleAction, initialState);
   const [isPending, startTransition] = useTransition();
 
@@ -55,9 +59,9 @@ export default function SentencePuzzleGame() {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="glassmorphic border-white/10 rounded-2xl w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Solve the Puzzle</CardTitle>
+          <CardTitle className="text-white text-center">Solve the Puzzle</CardTitle>
         </CardHeader>
         <form action={formAction}>
           <CardContent>
